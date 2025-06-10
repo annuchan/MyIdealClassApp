@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Parent.Parent_school_page"
+    android:background="#EDEDE9">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_bar">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center|left">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    style="@style/MyLinerLayout">
+                    <ImageView
+                        android:id="@+id/dropdown_menu"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/menu"
+                        android:layout_marginLeft="10dp"/>
+                    <ImageView
+                        android:onClick="back"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/left_arrow"/>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:layout_width="match_parent"
+                        android:text="Страница школы"
+                        android:textSize="25dp"
+                        android:fontFamily="@font/jost_semibold"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="216dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/schoolvolshck" />
+
+                <TextView
+                    android:id="@+id/SchoolTitle"
+                    style="@style/MyTextView"
+                    android:layout_width="match_parent"
+                    android:textSize="22dp"
+                    android:fontFamily="@font/jost_semibold"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center|left"
+                    android:layout_marginLeft="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            style="@style/MyTextView"
+                            android:text="Сокращенное название — "/>
+                        <TextView
+                            android:id="@+id/SchoolAbbreviature"
+                            style="@style/MyTextView"
+                            android:fontFamily="@font/jost_light"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="15dp"/>
+                    </LinearLayout>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Юридический и фактический адрес:" />
+                    <TextView
+                        android:id="@+id/SchoolAdress"
+                        style="@style/MyTextView"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/jost_light"
+                        android:gravity="center|left"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center|left">
+                        <TextView
+                            style="@style/MyTextView"
+                            android:text="Номер: " />
+                        <TextView
+                            android:id="@+id/SchoolPhone"
+                            style="@style/MyTextView"
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:fontFamily="@font/jost_light"
+                            android:gravity="center|left"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center|left"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:text="Мы на картах:"
+                            style="@style/MyTextView"
+                            android:gravity="center|left"/>
+                        <ImageView
+                            style="@style/MyImageView"
+                            app:srcCompat="@drawable/google_maps"
+                            android:layout_marginLeft="10dp"/>
+                        <ImageView
+                            style="@style/MyImageView"
+                            app:srcCompat="@drawable/yandex"
+                            android:layout_marginLeft="10dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center|left"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp">
+                        <ImageView
+                            android:id="@+id/directorimg"
+                            style="@style/MyImageView"
+                            android:layout_width="150dp"
+                            android:layout_height="200dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center|left"
+                            android:layout_marginLeft="10dp">
+                            <TextView
+                                style="@style/MyTextView"
+                                android:text="Директор школы: " />
+                            <TextView
+                                android:id="@+id/ditrectorname"
+                                style="@style/MyTextView"
+                                android:fontFamily="@font/jost_light"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Адрес электронной почты: " />
+                    <TextView
+                        android:id="@+id/schoolemail"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/jost_light"/>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Количество обучающихся: "
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/schoolstudents"
+                        android:fontFamily="@font/jost_light"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center|left"/>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Дата создания: "
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/schoolyear"
+                        android:fontFamily="@font/jost_light"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Языки образования: "
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/schoollanguage"
+                        android:fontFamily="@font/jost_light"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Формы обучения: "
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/schoolformaobycheniya"
+                        android:fontFamily="@font/jost_light"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Режим работы: "
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/schoolwork"
+                        android:fontFamily="@font/jost_light"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:text="Календарный учебный график:"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"/>
+                    <Button
+                        android:text="1-4 класс"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        style="@style/MyButtonStyle"
+                        android:id="@+id/openpdf1_4"/>
+                    <Button
+                        android:text="5-9 класс"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        style="@style/MyButtonStyle"/>
+                    <Button
+                        android:text="10-11 класс"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        style="@style/MyButtonStyle"/>
+                    <Button
+                        android:text="Свидетельство о госудаственной аккредитации"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        style="@style/MyButtonStyle"/>
+                    <Button
+                        android:text="Лицензия на осуществление образовательной деятельности"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        style="@style/MyButtonStyle"/>
+                    <Button
+                        android:text="Приложения лицензии на осуществление образовательной деятельности"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        style="@style/MyButtonStyle"/>
+                    <TextView
+                        style="@style/MyTextView"
+                        android:text="Учредитель: "
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/schoolychreditel"
+                        android:fontFamily="@font/jost_light"
+                        style="@style/MyTextView"
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E3D5CA"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="5">
+        <ImageView
+            android:onClick="toMain"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/logotype"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="about_the_app"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/podrobnee"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="logout"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/exitbutton"
+            android:id="@+id/exitbutton"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>

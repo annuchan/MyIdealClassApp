@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent     "
+    android:padding="30dp"
+    android:background="#EDEDE9">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="#E3D5CA" />
+
+    <TextView
+        android:text="Загрузка..."
+        style="@style/MyTextView"
+        android:textSize="25dp"
+        android:paddingTop="12dp"/>
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#E3D5CA"
+    android:layout_margin="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:id="@+id/foto_teacher"
+            style="@style/MyImageView"
+            android:layout_width="150dp"
+            android:layout_height="200dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+            <TextView
+                style="@style/MyTextView"
+                android:text="Учитель: " />
+            <TextView
+                android:id="@+id/teacherfirstname"
+                style="@style/MyTextView"
+                android:fontFamily="@font/jost_light"/>
+            <TextView
+                android:id="@+id/teachersecondname"
+                style="@style/MyTextView"
+                android:fontFamily="@font/jost_light"/>
+            <TextView
+                android:id="@+id/teacherthirsdname"
+                style="@style/MyTextView"
+                android:fontFamily="@font/jost_light"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+        <TextView
+            style="@style/MyTextView"
+            android:text="Специальность: " />
+        <TextView
+            android:id="@+id/Specialty_Teacher"
+            style="@style/MyTextView"
+            android:fontFamily="@font/jost_light"/>
+        <TextView
+            style="@style/MyTextView"
+            android:text="Стаж работы: " />
+        <TextView
+            android:id="@+id/Expirience"
+            style="@style/MyTextView"
+            android:fontFamily="@font/jost_light"/>
+        <TextView
+            style="@style/MyTextView"
+            android:text="Поощрения: " />
+        <TextView
+            android:id="@+id/Title_teacher"
+            style="@style/MyTextView"
+            android:fontFamily="@font/jost_light"/>
+        <TextView
+            style="@style/MyTextView"
+            android:text="Повышение квалификации: " />
+        <TextView
+            android:id="@+id/Professional_development"
+            style="@style/MyTextView"
+            android:fontFamily="@font/jost_light"/>
+    </LinearLayout>
+</LinearLayout>

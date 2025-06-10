@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:background="#E3D5CA">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/textViewEvent"
+            android:text="СЕКЦИЯ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:gravity="start"
+            style="@style/MyTextView" />
+
+        <ImageView
+            android:id="@+id/detailsImageView"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/details"
+            style="@style/MyImageView" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageApplication_form"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/titleApplication_form"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:textSize="25sp"/>
+    <TextView
+        style="@style/MyTextView"
+        android:id="@+id/DescriptionApplication_form"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/Place_asset"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+</LinearLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Autorization"
+    android:background="#E3D5CA">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/startactivity"
+                style="@style/MyImageView"
+                app:srcCompat="@drawable/logotype"/>
+            <TextView
+                style="@style/MyTextView"
+                android:layout_width="wrap_content"
+                android:text="Мой идеальный класс"
+                android:layout_marginLeft="10dp"
+                android:textSize="25dp"
+                android:fontFamily="@font/jost_semibold"/>
+        </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyButtonStyle"
+            android:hint="Введите логин"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:id="@+id/loginEditText"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyButtonStyle"
+            android:hint="Введите пароль"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:id="@+id/passwordEditText"
+            android:password="true"/>
+        <Button
+            android:id="@+id/loginButtonEnter"
+            android:text="Войти"
+            style="@style/MyButtonStyle"/>
+
+    </LinearLayout>
+</RelativeLayout>

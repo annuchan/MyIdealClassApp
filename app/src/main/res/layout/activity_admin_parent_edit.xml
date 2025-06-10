@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Admin.Admin_parent_edit"
+    android:background="#EDEDE9">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="60dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_bar">
+            <!-- Заголовок -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    style="@style/MyLinerLayout"
+                    android:gravity="top"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/dropdown_menu"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/menu"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"/>
+                    <ImageView
+                        android:onClick="back"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/left_arrow"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        style="@style/MyTextView"
+                        android:layout_width="match_parent"
+                        android:text="Редактирование родителя"
+                        android:textSize="25dp"
+                        android:fontFamily="@font/jost_semibold"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <TextView
+                    style="@style/MyTextView"
+                    android:layout_width="match_parent"
+                    android:text="Редактирование родителя. Обязательно перепроверьте правильность ввода и сохраните." />
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/parentLastName"
+                    android:hint="Введите фамилию"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/parentFirstName"
+                    android:hint="Введите имя"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/parentMiddleName"
+                    android:hint="Введите отчество"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/parentPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите номер телефона"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/parentEmail"
+                    android:hint="Введите адрес эл. почты"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/parentDateOfBirth"
+                    android:hint="Введите дату рождения"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/parentAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите адрес проживания"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <Spinner
+                    android:layout_margin="10dp"
+                    android:id="@+id/studentSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="#E3D5CA"
+                    android:padding="0dp"
+                    />
+                <Button
+                    android:id="@+id/saveButton"
+                    android:text="Сохранить"
+                    style="@style/MyButtonStyle"
+                    android:layout_gravity="center"
+                    android:textSize="19dp"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- Нижняя навигация -->
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E3D5CA"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:onClick="toMain"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/logotype"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="about_the_app"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/podrobnee"
+            android:layout_weight="1" />
+
+
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="logout"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/exitbutton"
+            android:id="@+id/exitbutton"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#E3D5CA"
+    android:layout_margin="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/Application_form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:gravity="start"
+            style="@style/MyTextView" />
+
+        <ImageView
+            android:id="@+id/detailsImageView"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/details"
+            style="@style/MyImageView" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/NameAsset"
+        style="@style/MyTextView"
+        android:layout_width="wrap_content"
+        android:textSize="25sp"
+        android:layout_gravity="start"/>
+    <TextView
+        style="@style/MyTextView"
+        android:id="@+id/ClassStudent"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:text="ФИО студента:"
+        android:gravity="left"/>
+    <TextView
+        style="@style/MyTextView"
+        android:id="@+id/FirstNameStudent"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/LastNameStudent"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/MiddleNameStudent"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+</LinearLayout>

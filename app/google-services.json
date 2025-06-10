@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "967852347210",
+    "firebase_url": "https://myidealclass-91e38-default-rtdb.firebaseio.com",
+    "project_id": "myidealclass-91e38",
+    "storage_bucket": "myidealclass-91e38.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967852347210:android:e3c3b2dc703ccc05d47bb3",
+        "android_client_info": {
+          "package_name": "com.example.myidealclassapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs4kkb38_sm5mpFxk2yrTHpIPEp49Bg1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

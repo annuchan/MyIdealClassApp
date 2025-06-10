@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    android:background="#E3D5CA">
+
+        <TextView
+            android:id="@+id/Dayitem"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:gravity="start"
+            style="@style/MyTextView" />
+    <TextView
+       android:text="Класс:"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/classitem"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:gravity="left"/>
+    <TextView
+        android:text="Учитель:"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:textSize="20sp"/>
+    <TextView
+        style="@style/MyTextView"
+        android:id="@+id/techeritem"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:text="Время:" />
+    <TextView
+        android:id="@+id/timeitem"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:text="Кабинет:" />
+    <TextView
+        android:id="@+id/cabinetitem"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+</LinearLayout>

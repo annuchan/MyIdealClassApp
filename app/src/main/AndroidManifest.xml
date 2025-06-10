@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyIdealClassApp"
+        tools:targetApi="31">
+        <activity
+            android:name=".Teacher.Teacher_class"
+            android:exported="false" />
+        <activity
+            android:name=".Teacher.Teacher_about_the_app"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_about_the_app"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_about_the_app"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_evalution_final"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".Parent.Parent_Evalution"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_asset_select"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_teacher"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_main_window"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_school_page"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_asset"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_main_window_more"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_important_information"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_homework"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_measure"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_main_window_more"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_teacher"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_student"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_main_window"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_important_information_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_Important_information"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_important_information"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_measure"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_measure_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_teacher_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_student_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_parent_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_parent"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_final_evalution"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_measure"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_main_window_more"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_main_window"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_homework"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.teacher_evalution"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_measure_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_important_imformation_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_asset_edit"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_asset"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_asset"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Parent.Parent_application_form"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_teacher_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_student_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_parent_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_measure_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_measure_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_important_information_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Teacher.Teacher_important_information_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Admin.Admin_asset_add"
+            android:exported="false"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".Autorization"
+            android:exported="true"
+            android:theme="@style/Theme.MyIdealClassApp.NoActionBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    android:background="#E3D5CA">
+    <ImageView
+        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:id="@+id/imageApplication_form"/>
+    <TextView
+        android:id="@+id/titleApplication_form"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:textSize="25sp"/>
+    <TextView
+        style="@style/MyTextView"
+        android:id="@+id/DescriptionApplication_form"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/Place_asset"
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/jost_light"
+        android:gravity="left"/>
+    <TextView
+        style="@style/MyTextView"
+        android:layout_width="match_parent"
+        android:text="Актуальное расписание секции можно узнать у руководителя или на вкладке ваши секции."
+        android:gravity="left"/>
+</LinearLayout>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Admin.Admin_teacher_edit"
+    android:background="#EDEDE9">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:indeterminateTint="#E3D5CA"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="60dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_bar">
+            <!-- Заголовок -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    style="@style/MyLinerLayout"
+                    android:gravity="top"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/dropdown_menu"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/menu"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"/>
+                    <ImageView
+                        android:onClick="back"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/left_arrow"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        style="@style/MyTextView"
+                        android:layout_width="match_parent"
+                        android:text="Редактирование учителя"
+                        android:textSize="25dp"
+                        android:fontFamily="@font/jost_semibold"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <TextView
+                    style="@style/MyTextView"
+                    android:layout_width="match_parent"
+                    android:text="Редактирование учителя. Обязательно перепроверьте правильность ввода и сохраните." />
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/LastName"
+                    android:hint="Введите фамилию учителя"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/Firstname"
+                    android:hint="Введите имя учителя"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/middlename"
+                    android:hint="Введите отчество учителя"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/Specialty_Teacher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите специальность"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/education"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите образование"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/stash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите стаж"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/gramot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите достижения"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите номер телефона"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите адрес эл. почты"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:id="@+id/adress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:hint="Введите адрес проживания"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/picture"
+                        android:layout_marginStart="10dp"
+                        android:padding="3dp"
+                        android:id="@+id/picture"/>
+
+
+                </LinearLayout>
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <Button
+                    android:id="@+id/savebutton"
+                    android:text="Сохранить"
+                    style="@style/MyButtonStyle"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- Нижняя навигация -->
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E3D5CA"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:onClick="toMain"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/logotype"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="about_the_app"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/podrobnee"
+            android:layout_weight="1" />
+
+
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="logout"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/exitbutton"
+            android:id="@+id/exitbutton"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>

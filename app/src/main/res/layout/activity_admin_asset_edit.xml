@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Admin.Admin_asset_edit"
+    android:background="#EDEDE9">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:indeterminateTint="#E3D5CA"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="60dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_bar">
+            <!-- Заголовок -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    style="@style/MyLinerLayout"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/dropdown_menu"
+                        style="@style/MyImageView"
+                        app:srcCompat="@drawable/menu"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"/>
+
+                    <ImageView
+                        android:onClick="back"
+                        style="@style/MyImageView"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/left_arrow" />
+
+                    <TextView
+                        style="@style/MyTextView"
+                        android:layout_width="match_parent"
+                        android:text="Редактирование секции"
+                        android:textSize="25dp"
+                        android:gravity="center_vertical"
+                        android:fontFamily="@font/jost_semibold" />
+                </LinearLayout>
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <TextView
+                    style="@style/MyTextView"
+                    android:layout_width="match_parent"
+                    android:text="Введите секцию. Обязательно перепроверьте правильность ввода и сохраните." />
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/addTitle"
+                    android:hint="Введите название секции"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/addDescrip"
+                    android:hint="Введите описание секции"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/addtype"
+                    android:hint="Введите место проведения"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    />
+                <TextView
+                    style="@style/MyTextView"
+                    android:layout_width="match_parent"
+                    android:text="*например спортзал, кабинет 2-17 и т.д."
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:layout_margin="10dp"
+                    android:id="@+id/teacherSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="#E3D5CA"
+                    android:padding="0dp"
+                    />
+                <View
+                    style="@style/MyLineHorizontal"/>
+                <ImageView
+                    style="@style/MyImageView"
+                    android:id="@+id/picture"
+                    app:srcCompat="@drawable/picture"
+                    android:layout_marginStart="10dp"
+                    android:padding="3dp" />
+
+                <View
+                    style="@style/MyLineHorizontal"/>
+
+                <Button
+                    android:id="@+id/moreButton"
+                    android:text="Сохранить"
+                    style="@style/MyButtonStyle"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- Нижняя навигация -->
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E3D5CA"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:onClick="toMain"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/logotype"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="about_the_app"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/podrobnee"
+            android:layout_weight="1" />
+
+
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="logout"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/exitbutton"
+            android:id="@+id/exitbutton"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>
