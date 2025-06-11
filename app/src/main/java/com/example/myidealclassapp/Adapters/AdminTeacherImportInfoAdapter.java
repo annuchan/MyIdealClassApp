@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import java.util.List;
 
 public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTeacherImportInfoAdapter.ViewHolder> {
 
+    private static final String TAG = "AdminTeacherImportInfoAdapter";
+
     private Context context;
     private List<Important_information> infoList;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -39,6 +42,7 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
     @NonNull
     @Override
     public AdminTeacherImportInfoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.item_teacher_admin_important_information, parent, false);
         return new ViewHolder(view);
     }
@@ -47,6 +51,7 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
     public void onBindViewHolder(@NonNull AdminTeacherImportInfoAdapter.ViewHolder holder, int position) {
         Important_information info = infoList.get(position);
 
+
         holder.title.setText(info.getTitle());
         holder.description.setText(info.getDescribe());
         holder.date.setText(info.getDate_imp_info());
@@ -54,7 +59,7 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
         String imageData = info.getImageBase64();
         if (imageData != null && !imageData.isEmpty()) {
             if (imageData.startsWith("http")) {
-                // Загружаем через Glide
+
                 Glide.with(context)
                         .load(imageData)
                         .placeholder(R.drawable.school2)
@@ -62,21 +67,22 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
                         .into(holder.image);
             } else {
                 try {
+                    Log.d(TAG, "Decoding Base64 image for position " + position);
                     byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
                     holder.image.setImageBitmap(bitmap);
                 } catch (Exception e) {
+                    Log.e(TAG, "Error decoding image for position " + position + ": " + e.getMessage());
                     holder.image.setImageResource(R.drawable.school2);
                 }
             }
         } else {
+            Log.d(TAG, "No image data for position " + position + ", using default image");
             holder.image.setImageResource(R.drawable.school2);
         }
 
-        // Обработка меню
         holder.menuButton.setOnClickListener(v -> showPopupMenu(v, info, position));
     }
-
 
     @Override
     public int getItemCount() {
@@ -112,14 +118,11 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
         edit.setOnClickListener(v -> {
             popupWindow.dismiss();
             Intent intent = new Intent(context, Teacher_important_imformation_edit.class);
-
-            // Передаём int id (не documentId)
             intent.putExtra("Id", info.getId());
             intent.putExtra("Title", info.getTitle());
             intent.putExtra("Describe", info.getDescribe());
             intent.putExtra("Date_imp_info", info.getDate_imp_info());
             intent.putExtra("Id_Employee", info.getId_Employee());
-
             context.startActivity(intent);
         });
 
@@ -137,18 +140,15 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
 
-        // Начальная прозрачность 0
         dialogView.setAlpha(0f);
         dialog.show();
 
-        // Плавное появление (fade in)
         dialogView.animate().alpha(1f).setDuration(300).start();
 
         ImageView yesButton = dialogView.findViewById(R.id.yesbutton);
         ImageView noButton = dialogView.findViewById(R.id.nobutton);
 
         yesButton.setOnClickListener(v -> {
-            // Плавное исчезновение (fade out)
             dialogView.animate().alpha(0f).setDuration(300).withEndAction(() -> {
                 db.collection("Important_information")
                         .whereEqualTo("id", info.getId())
@@ -157,11 +157,20 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
                             if (!queryDocumentSnapshots.isEmpty()) {
                                 queryDocumentSnapshots.getDocuments().get(0).getReference().delete()
                                         .addOnSuccessListener(aVoid -> {
+
                                             infoList.remove(position);
                                             notifyItemRemoved(position);
                                             notifyItemRangeChanged(position, infoList.size());
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e(TAG, "Error deleting item from Firestore for position " + position + ": " + e.getMessage());
                                         });
+                            } else {
+                                Log.d(TAG, "No document found with id " + info.getId() + " for position " + position);
                             }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e(TAG, "Error querying Firestore for position " + position + ": " + e.getMessage());
                         });
                 dialog.dismiss();
             }).start();
@@ -171,5 +180,4 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
             dialogView.animate().alpha(0f).setDuration(300).withEndAction(dialog::dismiss).start();
         });
     }
-
 }

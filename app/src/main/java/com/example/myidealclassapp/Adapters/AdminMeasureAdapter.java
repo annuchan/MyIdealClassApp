@@ -116,6 +116,7 @@ public class AdminMeasureAdapter extends RecyclerView.Adapter<AdminMeasureAdapte
             intent.putExtra("Describe", measure.getDescribe());
             intent.putExtra("Date_Measure", measure.getDate_Measure());
             intent.putExtra("Type_Measure", measure.getType_Measure());
+            intent.putExtra("ImageBase64", measure.getImageBase64());
             context.startActivity(intent);
         });
 

@@ -271,9 +271,8 @@ public class Admin_important_information_add extends AppCompatActivity {
             data.put("Describe", description);
             data.put("Date_imp_info", selectedDate);
             data.put("Id_Employee", employeeId);       // тут можешь подставить актуальный id
-            data.put("Id_Type", 0);
             data.put("ImageBase64", uploadedImageUrl);
-            data.put("Id", nextId);
+            data.put("id", nextId);
 
             db.collection("Important_information")
                     .add(data)
@@ -309,4 +308,5 @@ public class Admin_important_information_add extends AppCompatActivity {
     interface IdCallback {
         void onCallback(int nextId);
     }
+
 }

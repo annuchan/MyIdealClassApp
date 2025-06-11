@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -27,6 +29,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.myidealclassapp.Autorization;
 import com.example.myidealclassapp.Dropdown_menu.Admin_dropdown_menu;
 import com.example.myidealclassapp.R;
@@ -60,11 +63,11 @@ public class Admin_important_information_edit extends AppCompatActivity {
 
     private String imageBase64OrUrl = "";
     private boolean imageChanged = false;
-
+    private static final int MAX_UPLOAD_ATTEMPTS = 20;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     private final String IMGBB_API_KEY = "972a14249ae8a675f7d1384d2a11bc0e";
-
+    private RequestManager glideRequestManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +79,10 @@ public class Admin_important_information_edit extends AppCompatActivity {
         moreButton = findViewById(R.id.moreButton);
         imageView = findViewById(R.id.picture);
         db = FirebaseFirestore.getInstance();
-
+        glideRequestManager = Glide.with(this);
         Intent intent = getIntent();
         id = intent.getIntExtra("Id", -1);
+
         originalTitle = intent.getStringExtra("Title");
         originalDescribe = intent.getStringExtra("Describe");
         originalDate = intent.getStringExtra("Date_imp_info");
@@ -113,9 +117,11 @@ public class Admin_important_information_edit extends AppCompatActivity {
                         Uri imageUri = result.getData().getData();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                            uploadImageToImgBB(bitmap);
+                            moreButton.setEnabled(false); // Блокируем кнопку перед началом загрузки
+                            uploadImageToImgBB(bitmap, 1); // Начинаем загрузку с первой попытки
                         } catch (IOException e) {
                             Toast.makeText(this, "Ошибка выбора изображения", Toast.LENGTH_SHORT).show();
+                            moreButton.setEnabled(true); // Разблокируем кнопку при ошибке выбора
                         }
                     }
                 });
@@ -128,7 +134,7 @@ public class Admin_important_information_edit extends AppCompatActivity {
         }
 
         if (base64OrUrl.startsWith("http")) {
-            Glide.with(this)
+            glideRequestManager
                     .load(base64OrUrl)
                     .placeholder(R.drawable.school2)
                     .into(imageView);
@@ -190,12 +196,11 @@ public class Admin_important_information_edit extends AppCompatActivity {
                         updatedData.put("Describe", newDescribe);
                         updatedData.put("Date_imp_info", selectedDate);
                         updatedData.put("Id_employee", employeeId);
-                        updatedData.put("Id_type", 0);
 
                         if (imageChanged && !imageBase64OrUrl.isEmpty()) {
-                            updatedData.put("image_base64", imageBase64OrUrl);
+                            updatedData.put("ImageBase64", imageBase64OrUrl);
                         } else if (!imageChanged && imageBase64OrUrl != null) {
-                            updatedData.put("image_base64", imageBase64OrUrl);
+                            updatedData.put("ImageBase64", imageBase64OrUrl);
                         }
 
                         db.collection("Important_information")
@@ -214,13 +219,22 @@ public class Admin_important_information_edit extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this, "Ошибка поиска документа: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void uploadImageToImgBB(Bitmap bitmap) {
-        Toast.makeText(this, "Загрузка изображения...", Toast.LENGTH_SHORT).show();
+    private void uploadImageToImgBB(Bitmap bitmap, int attempt) {
+        if (attempt > MAX_UPLOAD_ATTEMPTS) {
+            runOnUiThread(() -> {
+                Log.d("DEBUG", "Max upload attempts (" + MAX_UPLOAD_ATTEMPTS + ") reached");
+                Toast.makeText(this, "Не удалось загрузить изображение после " + MAX_UPLOAD_ATTEMPTS + " попыток", Toast.LENGTH_LONG).show();
+                moreButton.setEnabled(true);
+            });
+            return;
+        }
+
+        Log.d("DEBUG", "Attempting to upload image, attempt #" + attempt);
+        runOnUiThread(() -> Toast.makeText(this, "Загрузка изображения (попытка " + attempt + ")...", Toast.LENGTH_SHORT).show());
 
         String base64Image = encodeImageToBase64(bitmap);
 
         OkHttpClient client = new OkHttpClient();
-
         FormBody formBody = new FormBody.Builder()
                 .add("key", IMGBB_API_KEY)
                 .add("image", base64Image)
@@ -234,13 +248,21 @@ public class Admin_important_information_edit extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> Toast.makeText(Admin_important_information_edit.this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show());
+                Log.e("DEBUG", "Image upload failed on attempt #" + attempt + ": " + e.getMessage());
+                // Добавляем задержку перед следующей попыткой
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    uploadImageToImgBB(bitmap, attempt + 1); // Рекурсивный вызов
+                }, 1000); // Задержка 1 секунда
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    runOnUiThread(() -> Toast.makeText(Admin_important_information_edit.this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show());
+                    Log.e("DEBUG", "Image upload failed on attempt #" + attempt + ": HTTP " + response.code());
+                    // Добавляем задержку перед следующей попыткой
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        uploadImageToImgBB(bitmap, attempt + 1); // Рекурсивный вызов
+                    }, 1000); // Задержка 1 секунда
                     return;
                 }
 
@@ -249,16 +271,23 @@ public class Admin_important_information_edit extends AppCompatActivity {
 
                 if (url != null) {
                     runOnUiThread(() -> {
+                        Log.d("DEBUG", "Image uploaded successfully on attempt #" + attempt + ": " + url);
                         imageBase64OrUrl = url;
                         imageChanged = true;
-                        Glide.with(Admin_important_information_edit.this)
+                        glideRequestManager
                                 .load(url)
                                 .placeholder(R.drawable.school2)
+                                .error(R.drawable.school2)
                                 .into(imageView);
                         Toast.makeText(Admin_important_information_edit.this, "Изображение загружено", Toast.LENGTH_SHORT).show();
+                        moreButton.setEnabled(true); // Разблокируем кнопку после успешной загрузки
                     });
                 } else {
-                    runOnUiThread(() -> Toast.makeText(Admin_important_information_edit.this, "Ошибка обработки ответа ImgBB", Toast.LENGTH_SHORT).show());
+                    Log.e("DEBUG", "Failed to parse ImgBB URL on attempt #" + attempt);
+                    // Добавляем задержку перед следующей попыткой
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        uploadImageToImgBB(bitmap, attempt + 1); // Рекурсивный вызов
+                    }, 1000); // Задержка 1 секунда
                 }
             }
         });
@@ -346,5 +375,15 @@ public class Admin_important_information_edit extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#D5BDAF"));
         }
+
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (glideRequestManager != null) {
+            glideRequestManager.clear(imageView);
+        }
+    }
+
+
 }

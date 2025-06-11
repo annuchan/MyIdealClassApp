@@ -259,7 +259,7 @@ public class Admin_asset_edit extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> Toast.makeText(Admin_asset_edit.this, "Изображение загружено изображения", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(Admin_asset_edit.this, "Изображение загружено", Toast.LENGTH_SHORT).show());
             }
 
             @Override public void onResponse(Call call, Response response) throws IOException {

@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 
 import com.example.myidealclassapp.Admin.Admin_about_the_app;
 import com.example.myidealclassapp.Admin.Admin_asset;
+import com.example.myidealclassapp.Admin.Admin_important_information;
 import com.example.myidealclassapp.Admin.Admin_main_window;
 import com.example.myidealclassapp.Admin.Admin_measure;
 import com.example.myidealclassapp.Admin.Admin_parent;
@@ -49,7 +50,7 @@ public class Admin_dropdown_menu {
         });
 
         importantInformation.setOnClickListener(v -> {
-            Intent intent = new Intent(context, Teacher_Important_information.class);
+            Intent intent = new Intent(context, Admin_important_information.class);
             intent.putExtra("employee_id", employeeId);
             context.startActivity(intent);
             popupWindow.dismiss();

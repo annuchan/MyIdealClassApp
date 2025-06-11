@@ -1,94 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Teacher.Teacher_Important_information"
+    android:background="#EDEDE9">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Teacher.Teacher_Important_information"
-        android:background="#EDEDE9">
+        android:orientation="vertical"
+        android:gravity="top">
 
+        <!-- Оборачиваем только прокручиваемую часть в ScrollView -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="top">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <!-- Оборачиваем только прокручиваемую часть в ScrollView -->
-                <LinearLayout
+            <!-- Элементы, которые будут прокручиваться -->
+            <LinearLayout
+                android:orientation="horizontal"
+                style="@style/MyLinerLayout">
+                <ImageView
+                    android:id="@+id/dropdown_menu"
+                    style="@style/MyImageView"
+                    app:srcCompat="@drawable/menu"
+                    android:layout_margin="10dp"/>
+                <ImageView
+                    android:onClick="back"
+                    style="@style/MyImageView"
+                    app:srcCompat="@drawable/left_arrow"/>
+                <TextView
+                    style="@style/MyTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Элементы, которые будут прокручиваться -->
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        style="@style/MyLinerLayout">
-                        <ImageView
-                            android:id="@+id/dropdown_menu"
-                            style="@style/MyImageView"
-                            app:srcCompat="@drawable/menu"
-                            android:layout_margin="10dp"/>
-                        <ImageView
-                            android:onClick="back"
-                            style="@style/MyImageView"
-                            app:srcCompat="@drawable/left_arrow"/>
-                        <TextView
-                            style="@style/MyTextView"
-                            android:layout_width="match_parent"
-                            android:text="Важная информация"
-                            android:textSize="25sp"
-                            android:fontFamily="@font/jost_semibold"/>
-                    </LinearLayout>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewImportant_information"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:contentDescription="Список информации"
-                        android:layout_marginTop="10dp"
-                        android:layout_above="@+id/bottom_bar"/>
-                </LinearLayout>
+                    android:text="Важная информация"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/jost_semibold"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewImportant_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Список информации"
+                android:layout_marginTop="10dp"
+                android:layout_above="@+id/bottom_bar"/>
         </LinearLayout>
-        <!-- Нижний бар -->
-        <LinearLayout
-            android:id="@+id/bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#E3D5CA"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="5">
-            <ImageView
-                android:onClick="moreButton"
-                style="@style/MyImageView"
-                app:srcCompat="@drawable/add"
-                android:layout_weight="1" />
-            <View
-                style="@style/MyLineVertical"
-                android:layout_weight="0.1" />
-            <ImageView
-                android:onClick="toMain"
-                style="@style/MyImageView"
-                app:srcCompat="@drawable/logotype"
-                android:layout_weight="1" />
-            <View
-                style="@style/MyLineVertical"
-                android:layout_weight="0.1" />
-            <ImageView
-                android:onClick="about_the_app"
-                style="@style/MyImageView"
-                app:srcCompat="@drawable/podrobnee"
-                android:layout_weight="1" />
-            <View
-                style="@style/MyLineVertical"
-                android:layout_weight="0.1" />
-            <ImageView
-                android:onClick="logout"
-                style="@style/MyImageView"
-                app:srcCompat="@drawable/exitbutton"
-                android:id="@+id/exitbutton"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
+    <!-- Нижний бар -->
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E3D5CA"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="5">
+        <ImageView
+            android:onClick="moreButton"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/add"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="toMain"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/logotype"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="about_the_app"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/podrobnee"
+            android:layout_weight="1" />
+        <View
+            style="@style/MyLineVertical"
+            android:layout_weight="0.1" />
+        <ImageView
+            android:onClick="logout"
+            style="@style/MyImageView"
+            app:srcCompat="@drawable/exitbutton"
+            android:id="@+id/exitbutton"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>

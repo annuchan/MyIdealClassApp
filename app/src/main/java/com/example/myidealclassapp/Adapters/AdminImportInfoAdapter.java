@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,6 @@ public class AdminImportInfoAdapter extends RecyclerView.Adapter<AdminImportInfo
 
         LinearLayout edit = popupView.findViewById(R.id.edit);
         LinearLayout delete = popupView.findViewById(R.id.delete);
-
         edit.setOnClickListener(v -> {
             popupWindow.dismiss();
             Intent intent = new Intent(context, Admin_important_information_edit.class);
@@ -118,6 +118,7 @@ public class AdminImportInfoAdapter extends RecyclerView.Adapter<AdminImportInfo
             intent.putExtra("Describe", info.getDescribe());
             intent.putExtra("Date_imp_info", info.getDate_imp_info());
             intent.putExtra("employeeId", info.getId_Employee());
+            intent.putExtra("image_base64", info.getImageBase64());
             context.startActivity(intent);
         });
 
