@@ -134,7 +134,6 @@ public class Teacher_measure extends AppCompatActivity {
     private void loadMeasures() {
         db.collection("Measure")
                 .whereEqualTo("Id_Employee", String.valueOf(employeeId))
-
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     measureList.clear();

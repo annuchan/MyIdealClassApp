@@ -28,7 +28,7 @@ public class ParentTeacherAdapter extends RecyclerView.Adapter<ParentTeacherAdap
         this.context = context;
         this.teacherList = teacherList;
     }
-
+ 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView foto_teacher;
         TextView subject_teacher, teacherfirstname, teachersecondname, teacherthirsdname;
@@ -37,7 +37,6 @@ public class ParentTeacherAdapter extends RecyclerView.Adapter<ParentTeacherAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             foto_teacher = itemView.findViewById(R.id.foto_teacher);
-            subject_teacher = itemView.findViewById(R.id.subject_teacher);
             teacherfirstname = itemView.findViewById(R.id.teacherfirstname);
             teachersecondname = itemView.findViewById(R.id.teachersecondname);
             teacherthirsdname = itemView.findViewById(R.id.teacherthirsdname);
@@ -57,8 +56,6 @@ public class ParentTeacherAdapter extends RecyclerView.Adapter<ParentTeacherAdap
     @Override
     public void onBindViewHolder(@NonNull ParentTeacherAdapter.ViewHolder holder, int position) {
         Employees teacher = teacherList.get(position);
-
-        holder.subject_teacher.setText(String.valueOf(teacher.getSubject()));
         holder.teacherfirstname.setText(teacher.getFirstName());
         holder.teachersecondname.setText(teacher.getLastName());
         holder.teacherthirsdname.setText(teacher.getMiddleName());

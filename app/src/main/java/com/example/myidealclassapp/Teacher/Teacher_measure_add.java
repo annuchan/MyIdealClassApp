@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsetsController;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -29,6 +31,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myidealclassapp.Admin.Admin_about_the_app;
+import com.example.myidealclassapp.Admin.Admin_important_information_add;
 import com.example.myidealclassapp.Admin.Admin_main_window;
 import com.example.myidealclassapp.Autorization;
 import com.example.myidealclassapp.Classes.Measure;
@@ -52,11 +55,12 @@ public class Teacher_measure_add extends AppCompatActivity {
     private static final String IMGBB_API_KEY = "972a14249ae8a675f7d1384d2a11bc0e";
     private static final String UPLOAD_URL = "https://api.imgbb.com/1/upload";
     private String employeeId;
-    private EditText addTitle, addDescrip;
+    private EditText addTitle, addDescrip, addtype;
     private ImageView imageView, calendarIcon;
     private Button saveButton;
     private String selectedDate = "";
     private int idSubject;
+    private ProgressBar progressBar;
     private String encodedImage = "";
     private String uploadedImageUrl = "";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -65,13 +69,13 @@ public class Teacher_measure_add extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_measure_add);
-
+        addtype = findViewById(R.id.addtype);
         addTitle = findViewById(R.id.addTitle);
         addDescrip = findViewById(R.id.addDescrip);
         imageView = findViewById(R.id.picture);
         calendarIcon = findViewById(R.id.calendarIcon);
         saveButton = findViewById(R.id.moreButton);
-
+        progressBar = findViewById(R.id.progressBar);
         imageView.setOnClickListener(v -> pickImageFromGallery());
         calendarIcon.setOnClickListener(v -> showDatePicker());
         saveButton.setOnClickListener(v -> {
@@ -164,6 +168,7 @@ public class Teacher_measure_add extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
                 encodedImage = encodeImageToBase64Strong(bitmap);
             } catch (IOException e) {
+                e.printStackTrace();
                 Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show();
             }
         }
@@ -179,11 +184,18 @@ public class Teacher_measure_add extends AppCompatActivity {
                         uploadedImageUrl = jsonObject.getJSONObject("data").getString("url");
                         saveMeasure();
                     } catch (JSONException e) {
-                        Toast.makeText(this, "Ошибка обработки ответа ImgBB", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                        Toast.makeText(this, "Ошибка разбора ответа от ImgBB", Toast.LENGTH_SHORT).show();
+                        saveButton.setEnabled(false);
+                        progressBar.setVisibility(View.VISIBLE);
                     }
                 },
-                error -> Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show()) {
-
+                error -> {
+                    Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show();
+                    Log.e("ImgBB Upload Error", error.toString());
+                    progressBar.setVisibility(View.GONE);
+                    saveButton.setEnabled(true);
+                }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -197,20 +209,48 @@ public class Teacher_measure_add extends AppCompatActivity {
     }
 
     private String encodeImageToBase64Strong(Bitmap bitmap) {
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 800, 800, true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap resizedBitmap = resizeBitmap(bitmap, 800, 800);
+        int maxSizeBytes = 500_000;
         int quality = 90;
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        while (baos.toByteArray().length > 500_000 && quality > 10) {
+
+        while (baos.toByteArray().length > maxSizeBytes && quality > 10) {
             baos.reset();
             quality -= 10;
             resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
         }
 
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        while (baos.toByteArray().length > maxSizeBytes) {
+            baos.reset();
+            int newWidth = (int) (resizedBitmap.getWidth() * 0.75);
+            int newHeight = (int) (resizedBitmap.getHeight() * 0.75);
+            resizedBitmap = Bitmap.createScaledBitmap(resizedBitmap, newWidth, newHeight, true);
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+        }
+
+        return Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
     }
 
+    private Bitmap resizeBitmap(Bitmap original, int maxWidth, int maxHeight) {
+        int width = original.getWidth();
+        int height = original.getHeight();
+
+        float ratioBitmap = (float) width / height;
+        float ratioMax = (float) maxWidth / maxHeight;
+
+        int finalWidth = maxWidth;
+        int finalHeight = maxHeight;
+
+        if (ratioMax > ratioBitmap) {
+            finalWidth = (int) (maxHeight * ratioBitmap);
+        } else {
+            finalHeight = (int) (maxWidth / ratioBitmap);
+        }
+
+        return Bitmap.createScaledBitmap(original, finalWidth, finalHeight, true);
+    }
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
@@ -227,12 +267,32 @@ public class Teacher_measure_add extends AppCompatActivity {
     private void saveMeasure() {
         String title = addTitle.getText().toString().trim();
         String description = addDescrip.getText().toString().trim();
-
-        if (title.isEmpty() || description.isEmpty()) {
-            Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+        String type_measure = addtype.getText().toString().trim();
+        if (title.isEmpty() || description.isEmpty() || selectedDate.isEmpty()) {
+            Toast.makeText(this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        getMaxIdFromFirestore(nextId -> {
+            Map<String, Object> data = new HashMap<>();
+            data.put("Title", title);              // маленькая буква
+            data.put("Describe", description);
+            data.put("Date_Measure", selectedDate);
+            data.put("Id_Employee", employeeId);       // тут можешь подставить актуальный id
+            data.put("ImageBase64", uploadedImageUrl);
+            data.put("Type_Measure", type_measure);
+            data.put("id", nextId);
+
+            db.collection("Measure")
+                    .add(data)
+                    .addOnSuccessListener(documentReference -> {
+                        Toast.makeText(this, "Информация успешно добавлена", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, "Ошибка при добавлении", Toast.LENGTH_SHORT).show());
+        });
+    }
+    private void getMaxIdFromFirestore(Teacher_measure_add.IdCallback callback) {
         db.collection("Measure")
                 .orderBy("id", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .limit(1)
@@ -240,33 +300,19 @@ public class Teacher_measure_add extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
                     int nextId = 1;
                     if (!querySnapshot.isEmpty()) {
-                        Long lastId = querySnapshot.getDocuments().get(0).getLong("id");
-                        if (lastId != null) {
-                            nextId = lastId.intValue() + 1;
+                        Long maxIdLong = querySnapshot.getDocuments().get(0).getLong("id");
+                        if (maxIdLong != null) {
+                            nextId = maxIdLong.intValue() + 1;
                         }
                     }
-
-                    Measure measure = new Measure(
-                            title,
-                            description,
-                            selectedDate,
-                            "16", // id_teacher — подставляй актуальное значение
-                            0,    // Id_Type всегда 0
-                            uploadedImageUrl
-                    );
-
-                    measure.setId(nextId);
-
-                    int finalNextId = nextId;
-                    db.collection("Measure")
-                            .add(measure)
-                            .addOnSuccessListener(docRef -> {
-                                docRef.update("id", finalNextId);
-                                Toast.makeText(this, "Мероприятие добавлено", Toast.LENGTH_SHORT).show();
-                                finish();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(this, "Ошибка при добавлении", Toast.LENGTH_SHORT).show());
+                    callback.onCallback(nextId);
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Ошибка при получении ID", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Ошибка при получении max ID", Toast.LENGTH_SHORT).show();
+                    callback.onCallback(1);
+                });
+    }
+    interface IdCallback {
+        void onCallback(int nextId);
     }
 }

@@ -87,7 +87,8 @@ public class Admin_teacher_edit extends AppCompatActivity {
         pictureImageView = findViewById(R.id.picture);
         pictureImageView.setOnClickListener(view -> chooseImage());
         saveButton = findViewById(R.id.savebutton);
-
+        subjectSpinner = findViewById(R.id.subject_teacher);
+        loadSubjects();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Log.d("Admin_teacher_edit", "Получены extras: " + extras.keySet());
@@ -388,7 +389,6 @@ public class Admin_teacher_edit extends AppCompatActivity {
             Toast.makeText(this, "Адрес не должен превышать 100 символов", Toast.LENGTH_SHORT).show();
             return;
         }
-        uploadImageToImgBB();
         // Обновляем данные в Firestore
         db.collection("Employees")
                 .whereEqualTo("Id", teacherId)
