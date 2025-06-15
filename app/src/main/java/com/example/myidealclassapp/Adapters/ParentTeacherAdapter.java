@@ -28,7 +28,7 @@ public class ParentTeacherAdapter extends RecyclerView.Adapter<ParentTeacherAdap
         this.context = context;
         this.teacherList = teacherList;
     }
- 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView foto_teacher;
         TextView subject_teacher, teacherfirstname, teachersecondname, teacherthirsdname;
@@ -65,7 +65,7 @@ public class ParentTeacherAdapter extends RecyclerView.Adapter<ParentTeacherAdap
         holder.Professional_development.setText(teacher.getQualification());
 
         String imageData = teacher.getImageBase64();
-        if (imageData != null && !imageData.trim().isEmpty()) {
+        if (imageData != null && !imageData.trim().isEmpty() && !imageData.trim().equals("0")) {
             if (imageData.startsWith("http")) {
                 // Загрузка из URL с помощью Glide
                 Glide.with(context)
@@ -84,7 +84,13 @@ public class ParentTeacherAdapter extends RecyclerView.Adapter<ParentTeacherAdap
                 }
             }
         } else {
-            holder.foto_teacher.setImageResource(android.R.drawable.ic_menu_report_image);
+            // Если imageData == "0" или пустое, ставим фиксированное фото teacher_photo из drawable
+            int resId = context.getResources().getIdentifier("teacher_photo", "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.foto_teacher.setImageResource(resId);
+            } else {
+                holder.foto_teacher.setImageResource(android.R.drawable.ic_menu_report_image);
+            }
         }
     }
 

@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class ParentMeasureAdapter extends RecyclerView.Adapter<ParentMeasureAdapter.ParentMeasureViewHolder> {
 
@@ -60,37 +61,34 @@ public class ParentMeasureAdapter extends RecyclerView.Adapter<ParentMeasureAdap
         holder.titleEvent.setText(measure.getTitle());
         holder.descriptionEvent.setText(measure.getDescribe());
         holder.typeEvent.setText(measure.getType_Measure());
+        holder.dateTimeEvent.setText(formatDate(measure.getDate_Measure()));
 
-        // Преобразование даты
-        String formattedDate = formatDate(measure.getDate_Measure());
-        holder.dateTimeEvent.setText(formattedDate);
-
-        // Загрузка изображения: URL или Base64
         String imageData = measure.getImageBase64();
-        if (imageData != null && !imageData.trim().isEmpty()) {
-            if (imageData.startsWith("http")) {
-                // Это URL — загружаем через Glide
-                Glide.with(context)
-                        .load(imageData)
-                        .placeholder(android.R.drawable.ic_menu_report_image)
-                        .error(android.R.drawable.ic_menu_report_image)
-                        .into(holder.imageEvent);
-            } else {
-                // Это Base64
-                try {
-                    byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    if (bitmap != null) {
-                        holder.imageEvent.setImageBitmap(bitmap);
-                    } else {
-                        holder.imageEvent.setImageResource(android.R.drawable.ic_menu_report_image);
-                    }
-                } catch (IllegalArgumentException e) {
-                    holder.imageEvent.setImageResource(android.R.drawable.ic_menu_report_image);
-                }
-            }
+
+        if (imageData == null ||
+                imageData.trim().isEmpty() ||
+                imageData.trim().equals("0")) {
+
+            // Используем картинку по умолчанию ph_1
+            holder.imageEvent.setImageResource(R.drawable.school3);
+        } else if (imageData.startsWith("http")) {
+            Glide.with(context)
+                    .load(imageData)
+                    .placeholder(R.drawable.school3)
+                    .error(R.drawable.school3)
+                    .into(holder.imageEvent);
         } else {
-            holder.imageEvent.setImageResource(android.R.drawable.ic_menu_report_image);
+            try {
+                byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                if (bitmap != null) {
+                    holder.imageEvent.setImageBitmap(bitmap);
+                } else {
+                    holder.imageEvent.setImageResource(R.drawable.school3);
+                }
+            } catch (IllegalArgumentException e) {
+                holder.imageEvent.setImageResource(R.drawable.school3);
+            }
         }
     }
 

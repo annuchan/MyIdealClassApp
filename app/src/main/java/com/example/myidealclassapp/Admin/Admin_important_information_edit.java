@@ -3,33 +3,23 @@ package com.example.myidealclassapp.Admin;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+
 import android.view.WindowInsetsController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.example.myidealclassapp.Autorization;
 import com.example.myidealclassapp.Dropdown_menu.Admin_dropdown_menu;
 import com.example.myidealclassapp.R;
@@ -37,37 +27,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class Admin_important_information_edit extends AppCompatActivity {
     private String employeeId;
     private EditText addTitle, addDescrip;
     private Button moreButton;
-    private ImageView imageView;
 
     private FirebaseFirestore db;
     private int id;
     private String originalTitle, originalDescribe, originalDate, idEmployee;
     private String selectedDate;
 
-    private String imageBase64OrUrl = "";
-    private boolean imageChanged = false;
-    private static final int MAX_UPLOAD_ATTEMPTS = 20;
-    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private ImageView imageView;
 
-    private final String IMGBB_API_KEY = "972a14249ae8a675f7d1384d2a11bc0e";
-    private RequestManager glideRequestManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,15 +52,17 @@ public class Admin_important_information_edit extends AppCompatActivity {
         addTitle = findViewById(R.id.addTitle);
         addDescrip = findViewById(R.id.addDescrip);
         moreButton = findViewById(R.id.moreButton);
-        imageView = findViewById(R.id.picture);
         db = FirebaseFirestore.getInstance();
-        glideRequestManager = Glide.with(this);
+
         Intent intent = getIntent();
         id = intent.getIntExtra("Id", -1);
 
         originalTitle = intent.getStringExtra("Title");
+
         originalDescribe = intent.getStringExtra("Describe");
+
         originalDate = intent.getStringExtra("Date_imp_info");
+
         employeeId = intent.getStringExtra("employeeId");
 
         selectedDate = originalDate;
@@ -93,66 +70,24 @@ public class Admin_important_information_edit extends AppCompatActivity {
         addTitle.setText(originalTitle);
         addDescrip.setText(originalDescribe);
 
-        imageBase64OrUrl = intent.getStringExtra("image_base64");
-        loadImage(imageBase64OrUrl);
         ImageView dropdownMenu = findViewById(R.id.dropdown_menu);
-        dropdownMenu.setOnClickListener(view ->
-                Admin_dropdown_menu.showCustomPopupMenu(view, this, employeeId)
-        );
+        dropdownMenu.setOnClickListener(view -> Admin_dropdown_menu.showCustomPopupMenu(view, this, employeeId));
+
         hideSystemUI();
-        imageView.setOnClickListener(v -> openImagePicker());
+
         findViewById(R.id.calendar).setOnClickListener(v -> openDatePicker());
+
         moreButton.setOnClickListener(v -> saveChanges());
+
         if (intent != null && intent.hasExtra("employeeId")) {
             employeeId = intent.getStringExtra("employeeId");
+
             Log.d("DEBUG", "Employee ID: " + employeeId);
         } else {
             employeeId = "";
             Log.d("DEBUG", "Employee ID не передан");
-        }
-        imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                            moreButton.setEnabled(false); // Блокируем кнопку перед началом загрузки
-                            uploadImageToImgBB(bitmap, 1); // Начинаем загрузку с первой попытки
-                        } catch (IOException e) {
-                            Toast.makeText(this, "Ошибка выбора изображения", Toast.LENGTH_SHORT).show();
-                            moreButton.setEnabled(true); // Разблокируем кнопку при ошибке выбора
-                        }
-                    }
-                });
-    }
 
-    private void loadImage(String base64OrUrl) {
-        if (base64OrUrl == null || base64OrUrl.isEmpty()) {
-            imageView.setImageResource(R.drawable.school2);
-            return;
         }
-
-        if (base64OrUrl.startsWith("http")) {
-            glideRequestManager
-                    .load(base64OrUrl)
-                    .placeholder(R.drawable.school2)
-                    .into(imageView);
-        } else {
-            try {
-                byte[] decodedBytes = Base64.decode(base64OrUrl, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                imageView.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                imageView.setImageResource(R.drawable.school2);
-            }
-        }
-    }
-
-    private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        imagePickerLauncher.launch(intent);
     }
 
     private void openDatePicker() {
@@ -197,12 +132,6 @@ public class Admin_important_information_edit extends AppCompatActivity {
                         updatedData.put("Date_imp_info", selectedDate);
                         updatedData.put("Id_employee", employeeId);
 
-                        if (imageChanged && !imageBase64OrUrl.isEmpty()) {
-                            updatedData.put("ImageBase64", imageBase64OrUrl);
-                        } else if (!imageChanged && imageBase64OrUrl != null) {
-                            updatedData.put("ImageBase64", imageBase64OrUrl);
-                        }
-
                         db.collection("Important_information")
                                 .document(docId)
                                 .update(updatedData)
@@ -219,134 +148,6 @@ public class Admin_important_information_edit extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this, "Ошибка поиска документа: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void uploadImageToImgBB(Bitmap bitmap, int attempt) {
-        if (attempt > MAX_UPLOAD_ATTEMPTS) {
-            runOnUiThread(() -> {
-                Log.d("DEBUG", "Max upload attempts (" + MAX_UPLOAD_ATTEMPTS + ") reached");
-                Toast.makeText(this, "Не удалось загрузить изображение после " + MAX_UPLOAD_ATTEMPTS + " попыток", Toast.LENGTH_LONG).show();
-                moreButton.setEnabled(true);
-            });
-            return;
-        }
-
-        Log.d("DEBUG", "Attempting to upload image, attempt #" + attempt);
-        runOnUiThread(() -> Toast.makeText(this, "Загрузка изображения (попытка " + attempt + ")...", Toast.LENGTH_SHORT).show());
-
-        String base64Image = encodeImageToBase64(bitmap);
-
-        OkHttpClient client = new OkHttpClient();
-        FormBody formBody = new FormBody.Builder()
-                .add("key", IMGBB_API_KEY)
-                .add("image", base64Image)
-                .build();
-
-        Request request = new Request.Builder()
-                .url("https://api.imgbb.com/1/upload")
-                .post(formBody)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("DEBUG", "Image upload failed on attempt #" + attempt + ": " + e.getMessage());
-                // Добавляем задержку перед следующей попыткой
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    uploadImageToImgBB(bitmap, attempt + 1); // Рекурсивный вызов
-                }, 1000); // Задержка 1 секунда
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    Log.e("DEBUG", "Image upload failed on attempt #" + attempt + ": HTTP " + response.code());
-                    // Добавляем задержку перед следующей попыткой
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        uploadImageToImgBB(bitmap, attempt + 1); // Рекурсивный вызов
-                    }, 1000); // Задержка 1 секунда
-                    return;
-                }
-
-                String res = response.body().string();
-                String url = parseImgBBUrl(res);
-
-                if (url != null) {
-                    runOnUiThread(() -> {
-                        Log.d("DEBUG", "Image uploaded successfully on attempt #" + attempt + ": " + url);
-                        imageBase64OrUrl = url;
-                        imageChanged = true;
-                        glideRequestManager
-                                .load(url)
-                                .placeholder(R.drawable.school2)
-                                .error(R.drawable.school2)
-                                .into(imageView);
-                        Toast.makeText(Admin_important_information_edit.this, "Изображение загружено", Toast.LENGTH_SHORT).show();
-                        moreButton.setEnabled(true); // Разблокируем кнопку после успешной загрузки
-                    });
-                } else {
-                    Log.e("DEBUG", "Failed to parse ImgBB URL on attempt #" + attempt);
-                    // Добавляем задержку перед следующей попыткой
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        uploadImageToImgBB(bitmap, attempt + 1); // Рекурсивный вызов
-                    }, 1000); // Задержка 1 секунда
-                }
-            }
-        });
-    }
-
-    private String encodeImageToBase64(Bitmap bitmap) {
-        int maxSizeBytes = 1_000_000;
-        int quality = 60;
-        Bitmap scaledBitmap = bitmap;
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-
-        while (baos.toByteArray().length > maxSizeBytes && quality > 10) {
-            baos.reset();
-            quality -= 10;
-            int newWidth = (int) (scaledBitmap.getWidth() * 0.9);
-            int newHeight = (int) (scaledBitmap.getHeight() * 0.9);
-            scaledBitmap = Bitmap.createScaledBitmap(scaledBitmap, newWidth, newHeight, true);
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        }
-
-        byte[] byteArray = baos.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    private String parseImgBBUrl(String json) {
-        try {
-            int urlStart = json.indexOf("\"url\":\"") + 7;
-            int urlEnd = json.indexOf("\"", urlStart);
-            if (urlStart > 6 && urlEnd > urlStart) {
-                return json.substring(urlStart, urlEnd).replace("\\/", "/");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    public void back(View view) {
-        finish();
-    }
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, Autorization.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-    public void toMain(View view) {
-        Intent intent = new Intent(this, Admin_main_window.class);
-        intent.putExtra("employee_id", employeeId);
-        startActivity(intent);
-    }
-    public void about_the_app(View view) {
-        Intent intent = new Intent(this, Admin_about_the_app.class);
-        intent.putExtra("employee_id", employeeId);
-        startActivity(intent);
-    }
-    /// Скрытие всех баров
     private void hideSystemUI() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             getWindow().setDecorFitsSystemWindows(false);
@@ -375,15 +176,16 @@ public class Admin_important_information_edit extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#D5BDAF"));
         }
-
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (glideRequestManager != null) {
-            glideRequestManager.clear(imageView);
-        }
     }
 
+    public void back(View view) {
+        finish();
+    }
 
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, Autorization.class);
+        startActivity(intent);
+        finish();
+    }
 }

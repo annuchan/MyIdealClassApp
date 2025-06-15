@@ -19,6 +19,7 @@ import com.example.myidealclassapp.Parent.Parent_asset_select;
 import com.example.myidealclassapp.Parent.Parent_evalution_final;
 import com.example.myidealclassapp.Parent.Parent_homework;
 import com.example.myidealclassapp.Parent.Parent_important_information;
+import com.example.myidealclassapp.Parent.Parent_main_window;
 import com.example.myidealclassapp.Parent.Parent_measure;
 import com.example.myidealclassapp.Parent.Parent_school_page;
 import com.example.myidealclassapp.Parent.Parent_teacher;
@@ -53,7 +54,7 @@ public class Parent_dropdown_menu {
         // Обработчики кликов
         main_window.setOnClickListener(v -> {
             Toast.makeText(context, "Вы перешли на страницу", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, Parent_school_page.class);
+            Intent intent = new Intent(context, Parent_main_window.class);
             intent.putExtra("EXTRA_STUDENT_ID", currentStudentId);
             context.startActivity(intent);
             popupWindow.dismiss();

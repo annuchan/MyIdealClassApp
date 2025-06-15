@@ -17,6 +17,7 @@ import com.example.myidealclassapp.Classes.Asset;
 import com.example.myidealclassapp.R;
 
 import java.util.List;
+import java.util.Random;
 
 public class ParentAssetAdapter extends RecyclerView.Adapter<ParentAssetAdapter.AssetViewHolder> {
 
@@ -56,21 +57,27 @@ public class ParentAssetAdapter extends RecyclerView.Adapter<ParentAssetAdapter.
         holder.description.setText(asset.getDescribe());
         holder.place.setText(asset.getPlace());
 
-        // Установим email в одно из полей
-        String email = asset.getId_Employee();
-
 
         String imageBase64 = asset.getImageBase64();
-        if (imageBase64 != null && !imageBase64.trim().isEmpty()) {
+
+        if (imageBase64 == null ||
+                imageBase64.trim().isEmpty() ||
+                imageBase64.trim().equals("0")) {
+
+            // Используем картинку по умолчанию ph_1
+            holder.imageView.setImageResource(R.drawable.school3);
+        } else {
             try {
                 byte[] decodedBytes = Base64.decode(imageBase64, Base64.DEFAULT);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                holder.imageView.setImageBitmap(bitmap);
+                if (bitmap != null) {
+                    holder.imageView.setImageBitmap(bitmap);
+                } else {
+                    holder.imageView.setImageResource(R.drawable.school3);
+                }
             } catch (Exception e) {
-                holder.imageView.setImageResource(android.R.drawable.ic_menu_report_image);
+                holder.imageView.setImageResource(R.drawable.school3);
             }
-        } else {
-            holder.imageView.setImageResource(android.R.drawable.ic_menu_report_image);
         }
     }
 

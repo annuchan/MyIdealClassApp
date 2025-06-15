@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myidealclassapp.Admin.Admin_teacher_edit;
 import com.example.myidealclassapp.Classes.Employees;
 import com.example.myidealclassapp.R;
-import com.example.myidealclassapp.Utilits.LoadingDelete;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -28,8 +27,6 @@ public class AdminEmployeeAdapter extends RecyclerView.Adapter<AdminEmployeeAdap
     private final List<Employees> employeeList;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private Employees employeeToDelete;
-    private int positionToDelete;
 
     public AdminEmployeeAdapter(Context context, List<Employees> employeeList) {
         this.context = context;
@@ -42,7 +39,7 @@ public class AdminEmployeeAdapter extends RecyclerView.Adapter<AdminEmployeeAdap
         View view = LayoutInflater.from(context).inflate(R.layout.item_admin_emploee, parent, false);
         return new ViewHolder(view);
     }
-
+    /// Вывод данных в ресайклвью
     @Override
     public void onBindViewHolder(@NonNull AdminEmployeeAdapter.ViewHolder holder, int position) {
         Employees employee = employeeList.get(position);
@@ -79,7 +76,7 @@ public class AdminEmployeeAdapter extends RecyclerView.Adapter<AdminEmployeeAdap
             detailsImage = itemView.findViewById(R.id.detailsImageView);
         }
     }
-
+    /// Перенаправление данных в окно редактирования
     private void showPopupMenu(View anchorView, Employees employee, int position) {
         View popupView = LayoutInflater.from(context).inflate(R.layout.item_edit_delete, null);
         final PopupWindow popupWindow = new PopupWindow(popupView,
@@ -113,7 +110,7 @@ public class AdminEmployeeAdapter extends RecyclerView.Adapter<AdminEmployeeAdap
             deleteEmployee(employee, position);
         });
     }
-
+    /// Плавный показ всплывающего меню для удаления и удаление объекта
     private void deleteEmployee(Employees employee, int position) {
         Long idToDelete = employee.getId();
 

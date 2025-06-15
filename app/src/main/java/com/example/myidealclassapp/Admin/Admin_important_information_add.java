@@ -44,27 +44,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Admin_important_information_add extends AppCompatActivity {
-    private ProgressBar progressBar;
-    private static final int REQUEST_IMAGE_PICK = 1001;
-    private static final String IMGBB_API_KEY = "972a14249ae8a675f7d1384d2a11bc0e";
-    private static final String UPLOAD_URL = "https://api.imgbb.com/1/upload";
     private String employeeId;
     private EditText addTitle, addDescrip;
-    private ImageView imageView, calendarIcon;
+    private ImageView calendarIcon;
     private Button saveButton;
     private String selectedDate = "";
-    private String encodedImage = "";
-    private String uploadedImageUrl = "";
+
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_important_information_add);
-        progressBar = findViewById(R.id.progressBar);
         addTitle = findViewById(R.id.addTitle);
         addDescrip = findViewById(R.id.addDescrip);
-        imageView = findViewById(R.id.picture);
         calendarIcon = findViewById(R.id.calendarIconAdmin);
         saveButton = findViewById(R.id.moreButton);
         Intent intent = getIntent();
@@ -75,16 +68,9 @@ public class Admin_important_information_add extends AppCompatActivity {
             employeeId = "";
             Log.d("DEBUG", "Employee ID не передан");
         }
-        imageView.setOnClickListener(v -> pickImageFromGallery());
         calendarIcon.setOnClickListener(v -> showDatePicker());
         saveButton.setOnClickListener(v -> {
-            saveButton.setEnabled(false);
-            progressBar.setVisibility(View.VISIBLE);
-            if (!encodedImage.isEmpty()) {
-                uploadImageToImgBB();
-            } else {
-                saveImportantInformation();
-            }
+            saveImportantInformation();
         });
         ImageView dropdownMenu = findViewById(R.id.dropdown_menu);
         dropdownMenu.setOnClickListener(view ->
@@ -142,105 +128,6 @@ public class Admin_important_information_add extends AppCompatActivity {
             getWindow().setNavigationBarColor(Color.parseColor("#D5BDAF"));
         }
     }
-    private void pickImageFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_IMAGE_PICK);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
-            Uri imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                imageView.setImageBitmap(bitmap);
-                encodedImage = encodeImageToBase64Strong(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void uploadImageToImgBB() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
-                response -> {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        uploadedImageUrl = jsonObject.getJSONObject("data").getString("url");
-                        saveImportantInformation();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Ошибка разбора ответа от ImgBB", Toast.LENGTH_SHORT).show();
-                        saveButton.setEnabled(false);
-                        progressBar.setVisibility(View.VISIBLE);
-                    }
-                },
-                error -> {
-                    Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show();
-                    Log.e("ImgBB Upload Error", error.toString());
-                    progressBar.setVisibility(View.GONE);
-                    saveButton.setEnabled(true);
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("key", IMGBB_API_KEY);
-                params.put("image", encodedImage);
-                return params;
-            }
-        };
-
-        queue.add(stringRequest);
-    }
-
-    private String encodeImageToBase64Strong(Bitmap bitmap) {
-        Bitmap resizedBitmap = resizeBitmap(bitmap, 800, 800);
-        int maxSizeBytes = 500_000;
-        int quality = 90;
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-
-        while (baos.toByteArray().length > maxSizeBytes && quality > 10) {
-            baos.reset();
-            quality -= 10;
-            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        }
-
-        while (baos.toByteArray().length > maxSizeBytes) {
-            baos.reset();
-            int newWidth = (int) (resizedBitmap.getWidth() * 0.75);
-            int newHeight = (int) (resizedBitmap.getHeight() * 0.75);
-            resizedBitmap = Bitmap.createScaledBitmap(resizedBitmap, newWidth, newHeight, true);
-            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        }
-
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-    }
-
-    private Bitmap resizeBitmap(Bitmap original, int maxWidth, int maxHeight) {
-        int width = original.getWidth();
-        int height = original.getHeight();
-
-        float ratioBitmap = (float) width / height;
-        float ratioMax = (float) maxWidth / maxHeight;
-
-        int finalWidth = maxWidth;
-        int finalHeight = maxHeight;
-
-        if (ratioMax > ratioBitmap) {
-            finalWidth = (int) (maxHeight * ratioBitmap);
-        } else {
-            finalHeight = (int) (maxWidth / ratioBitmap);
-        }
-
-        return Bitmap.createScaledBitmap(original, finalWidth, finalHeight, true);
-    }
 
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
@@ -271,7 +158,7 @@ public class Admin_important_information_add extends AppCompatActivity {
             data.put("Describe", description);
             data.put("Date_imp_info", selectedDate);
             data.put("Id_Employee", employeeId);       // тут можешь подставить актуальный id
-            data.put("ImageBase64", uploadedImageUrl);
+            data.put("ImageBase64", 0);
             data.put("id", nextId);
 
             db.collection("Important_information")

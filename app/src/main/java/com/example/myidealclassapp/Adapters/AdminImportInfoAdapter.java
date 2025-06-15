@@ -26,6 +26,7 @@ import com.example.myidealclassapp.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Random;
 
 public class AdminImportInfoAdapter extends RecyclerView.Adapter<AdminImportInfoAdapter.ViewHolder> {
 
@@ -57,28 +58,39 @@ public class AdminImportInfoAdapter extends RecyclerView.Adapter<AdminImportInfo
         holder.date.setText(info.getDate_imp_info());
 
         String imageData = info.getImageBase64();
-        if (imageData != null && !imageData.isEmpty()) {
-            if (imageData.startsWith("http")) {
-                Glide.with(context)
-                        .load(imageData)
-                        .placeholder(R.drawable.school2)
-                        .error(R.drawable.school2)
-                        .into(holder.image);
+
+        // Если поле пустое, null или "0" — ставим ph_1 жёстко
+        if (imageData == null || imageData.isEmpty() || imageData.equals("0")) {
+            imageData = "school3";
+            info.setImageBase64(imageData);
+        }
+
+        if (imageData.startsWith("http")) {
+            Glide.with(context)
+                    .load(imageData)
+                    .placeholder(R.drawable.school2)
+                    .error(R.drawable.school2)
+                    .into(holder.image);
+        } else if (imageData.startsWith("school3")) {
+            int resId = context.getResources().getIdentifier(imageData, "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.image.setImageResource(resId);
             } else {
-                try {
-                    byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    holder.image.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    holder.image.setImageResource(R.drawable.school2);
-                }
+                holder.image.setImageResource(R.drawable.school2);
             }
         } else {
-            holder.image.setImageResource(R.drawable.school2);
+            try {
+                byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                holder.image.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                holder.image.setImageResource(R.drawable.school2);
+            }
         }
 
         holder.menuButton.setOnClickListener(v -> showPopupMenu(v, info, position));
     }
+
 
     @Override
     public int getItemCount() {
@@ -118,7 +130,7 @@ public class AdminImportInfoAdapter extends RecyclerView.Adapter<AdminImportInfo
             intent.putExtra("Describe", info.getDescribe());
             intent.putExtra("Date_imp_info", info.getDate_imp_info());
             intent.putExtra("employeeId", info.getId_Employee());
-            intent.putExtra("image_base64", info.getImageBase64());
+            intent.putExtra("ImageBase64", info.getImageBase64());
             context.startActivity(intent);
         });
 

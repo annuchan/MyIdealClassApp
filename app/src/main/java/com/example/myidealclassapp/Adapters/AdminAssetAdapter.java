@@ -1,6 +1,5 @@
 package com.example.myidealclassapp.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -45,7 +44,7 @@ public class AdminAssetAdapter extends RecyclerView.Adapter<AdminAssetAdapter.Vi
         View view = LayoutInflater.from(context).inflate(R.layout.item_admin_asset, parent, false);
         return new ViewHolder(view);
     }
-
+/// Вывод данных в Ресайклвью
     @Override
     public void onBindViewHolder(@NonNull AdminAssetAdapter.ViewHolder holder, int position) {
         Asset asset = assetList.get(position);
@@ -63,19 +62,26 @@ public class AdminAssetAdapter extends RecyclerView.Adapter<AdminAssetAdapter.Vi
                         .error(R.drawable.school2)
                         .into(holder.image);
             } else {
-                try {
-                    byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    holder.image.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    holder.image.setImageResource(R.drawable.school2);
+                if (imageData.equals("0")) {
+                    // Если imageData == "0", ставим ph_1
+                    int resId = context.getResources().getIdentifier("school3", "drawable", context.getPackageName());
+                    holder.image.setImageResource(resId);
+                } else {
+                    try {
+                        byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                        holder.image.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        holder.image.setImageResource(R.drawable.school3);
+                    }
                 }
             }
-        } else {
+        } else if (imageData == null || imageData.isEmpty()) {
             holder.image.setImageResource(R.drawable.school2);
         }
 
         holder.menuButton.setOnClickListener(v -> showPopupMenu(v, asset, position));
+
     }
 
     @Override
@@ -96,7 +102,7 @@ public class AdminAssetAdapter extends RecyclerView.Adapter<AdminAssetAdapter.Vi
             menuButton = itemView.findViewById(R.id.detailsImageView);
         }
     }
-
+    ///Перенаправление данных на окно для редактирования
     private void showPopupMenu(View anchorView, Asset asset, int position) {
         View popupView = LayoutInflater.from(context).inflate(R.layout.item_edit_delete, null);
         final PopupWindow popupWindow = new PopupWindow(popupView,
@@ -125,7 +131,7 @@ public class AdminAssetAdapter extends RecyclerView.Adapter<AdminAssetAdapter.Vi
             showDeleteDialog(asset, position);
         });
     }
-
+/// Плавный показ всплывающего меню для удаления и удаление объекта
     private void showDeleteDialog(Asset asset, int position) {
         View deleteView = LayoutInflater.from(context).inflate(R.layout.item_delete, null);
         PopupWindow popupWindow = new PopupWindow(deleteView,
@@ -133,8 +139,6 @@ public class AdminAssetAdapter extends RecyclerView.Adapter<AdminAssetAdapter.Vi
 
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-
-        // Анимация появления
         deleteView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in));
         popupWindow.showAtLocation(deleteView, Gravity.CENTER, 0, 0);
 
@@ -168,13 +172,11 @@ public class AdminAssetAdapter extends RecyclerView.Adapter<AdminAssetAdapter.Vi
                     .addOnFailureListener(e ->
                             Toast.makeText(context, "Ошибка поиска документа: " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
-            // Анимация скрытия
             deleteView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out));
             deleteView.postDelayed(popupWindow::dismiss, 300);
         });
 
         noButton.setOnClickListener(v -> {
-            // Анимация скрытия
             deleteView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out));
             deleteView.postDelayed(popupWindow::dismiss, 300);
         });

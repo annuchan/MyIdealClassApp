@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class ParentImportInfoAdapter extends RecyclerView.Adapter<ParentImportInfoAdapter.ParentImportInfoViewHolder> {
 
@@ -58,30 +59,33 @@ public class ParentImportInfoAdapter extends RecyclerView.Adapter<ParentImportIn
         holder.title.setText(info.getTitle());
         holder.description.setText(info.getDescribe());
         holder.date.setText(formatDate(info.getDate_imp_info()));
-
         String imageData = info.getImageBase64();
-        if (imageData != null && !imageData.trim().isEmpty()) {
-            if (imageData.startsWith("http")) {
-                // Загрузка из URL через Glide
-                Glide.with(context)
-                        .load(imageData)
-                        .placeholder(android.R.drawable.ic_menu_report_image)
-                        .error(android.R.drawable.ic_menu_report_image)
-                        .into(holder.imageView);
-            } else {
-                // Загрузка из Base64
-                try {
-                    byte[] bytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    holder.imageView.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    holder.imageView.setImageResource(android.R.drawable.ic_menu_report_image);
-                }
-            }
+
+        if (imageData == null ||
+                imageData.trim().isEmpty() ||
+                imageData.trim().equals("0")) {
+
+            // Используем картинку по умолчанию ph_1
+            holder.imageView.setImageResource(R.drawable.school3);
+        } else if (imageData.startsWith("http")) {
+            // Загрузка из URL с помощью Glide
+            Glide.with(context)
+                    .load(imageData)
+                    .placeholder(R.drawable.school3)
+                    .error(R.drawable.school3)
+                    .into(holder.imageView);
         } else {
-            holder.imageView.setImageResource(android.R.drawable.ic_menu_report_image);
+            // Загрузка из Base64
+            try {
+                byte[] bytes = Base64.decode(imageData, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                holder.imageView.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                holder.imageView.setImageResource(R.drawable.school3);
+            }
         }
     }
+
 
     private String formatDate(String input) {
         try {

@@ -7,17 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".Teacher.Teacher_about_the_app"
     android:background="#EDEDE9">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="top"
         android:layout_marginTop="10dp">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_above="@+id/bottom_bar">
             <LinearLayout
                 android:orientation="vertical"
                 style="@style/MyLinerLayout">
@@ -116,8 +115,9 @@
                         android:text="➤ Уведомления о событиях, мероприятиях и учебных данных." />
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+
     </LinearLayout>
+    </ScrollView>
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"

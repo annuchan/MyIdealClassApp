@@ -208,41 +208,6 @@
                         style="@style/MyTextView"
                         android:layout_marginTop="10dp"/>
                     <TextView
-                        android:text="Календарный учебный график:"
-                        style="@style/MyTextView"
-                        android:layout_marginTop="10dp"/>
-                    <Button
-                        android:text="1-4 класс"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        style="@style/MyButtonStyle"
-                        android:id="@+id/openpdf1_4"/>
-                    <Button
-                        android:text="5-9 класс"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        style="@style/MyButtonStyle"/>
-                    <Button
-                        android:text="10-11 класс"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        style="@style/MyButtonStyle"/>
-                    <Button
-                        android:text="Свидетельство о госудаственной аккредитации"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        style="@style/MyButtonStyle"/>
-                    <Button
-                        android:text="Лицензия на осуществление образовательной деятельности"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        style="@style/MyButtonStyle"/>
-                    <Button
-                        android:text="Приложения лицензии на осуществление образовательной деятельности"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        style="@style/MyButtonStyle"/>
-                    <TextView
                         style="@style/MyTextView"
                         android:text="Учредитель: "
                         android:layout_marginTop="10dp"/>

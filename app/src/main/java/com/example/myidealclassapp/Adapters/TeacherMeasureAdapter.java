@@ -24,6 +24,7 @@ import com.example.myidealclassapp.Teacher.Teacher_measure_edit;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Random;
 
 public class TeacherMeasureAdapter extends RecyclerView.Adapter<TeacherMeasureAdapter.ViewHolder> {
 
@@ -53,28 +54,33 @@ public class TeacherMeasureAdapter extends RecyclerView.Adapter<TeacherMeasureAd
         holder.dateTime.setText(measure.getDate_Measure());
 
         String imageData = measure.getImageBase64();
-        if (imageData != null && !imageData.isEmpty()) {
-            if (imageData.startsWith("http")) {
-                Glide.with(context)
-                        .load(imageData)
-                        .placeholder(R.drawable.school2)
-                        .error(R.drawable.school2)
-                        .into(holder.imageEvent);
-            } else {
-                try {
-                    byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    holder.imageEvent.setImageBitmap(decodedBitmap);
-                } catch (Exception e) {
-                    holder.imageEvent.setImageResource(R.drawable.school2);
-                }
-            }
+
+        if (imageData == null ||
+                imageData.trim().isEmpty() ||
+                imageData.trim().equals("0")) {
+
+            // Используем картинку по умолчанию ph_1
+            holder.imageEvent.setImageResource(R.drawable.school3);
+        } else if (imageData.startsWith("http")) {
+            Glide.with(context)
+                    .load(imageData)
+                    .placeholder(R.drawable.school3)
+                    .error(R.drawable.school3)
+                    .into(holder.imageEvent);
         } else {
-            holder.imageEvent.setImageResource(R.drawable.school2);
+            try {
+                byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                holder.imageEvent.setImageBitmap(decodedBitmap);
+            } catch (Exception e) {
+                holder.imageEvent.setImageResource(R.drawable.school3);
+            }
         }
 
         holder.detailsImage.setOnClickListener(v -> showPopupMenu(v, measure, position));
+
     }
+
 
     @Override
     public int getItemCount() {

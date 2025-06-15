@@ -87,7 +87,6 @@ public class Admin_measure_add extends AppCompatActivity {
         addTitle = findViewById(R.id.addTitle);
         addDescrip = findViewById(R.id.addDescrip);
         addType = findViewById(R.id.addtype);
-        imageView = findViewById(R.id.picture);
         calendarIcon = findViewById(R.id.calendar);
         saveButton = findViewById(R.id.moreButton);
 

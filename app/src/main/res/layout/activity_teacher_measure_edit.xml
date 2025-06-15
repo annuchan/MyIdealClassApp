@@ -44,7 +44,7 @@
             <TextView
                 style="@style/MyTextView"
                 android:layout_width="match_parent"
-                android:text="Добавление мероприятия"
+                android:text="Редактирование мероприятия"
                 android:textSize="25dp"
                 android:fontFamily="@font/jost_semibold" />
         </LinearLayout>
@@ -64,7 +64,7 @@
             android:hint="Введите название мероприятия"
             android:padding="10dp"
             android:layout_margin="10dp"
-            />
+            android:textColorHint="#140F0B"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:hint="Введите описание мероприятия"
             android:padding="10dp"
             android:layout_margin="10dp"
-            />
+            android:textColorHint="#140F0B" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:hint="Введите какое мероприятиe будет"
             android:padding="10dp"
             android:layout_margin="10dp"
-            />
+            android:textColorHint="#140F0B" />
         <View
             style="@style/MyLineHorizontal"/>
         <TextView
@@ -102,12 +102,6 @@
             android:gravity="left"
             android:orientation="horizontal"
             android:weightSum="5">
-            <ImageView
-                android:id="@+id/picture"
-                style="@style/MyImageView"
-                app:srcCompat="@drawable/picture"
-                android:layout_marginStart="10dp"
-                android:padding="3dp" />
             <ImageView
                 android:id="@+id/calendar"
                 style="@style/MyImageView"

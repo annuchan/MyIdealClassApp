@@ -63,7 +63,7 @@
                     android:hint="Введите фамилию"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:hint="Введите имя"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                     android:hint="Введите отчество"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:id="@+id/studentDateOfBirth"
                     android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                     android:hint="Введите дату рождения"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B"/>
                 <EditText
                     android:id="@+id/studentPhone"
                     android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                     android:hint="Введите номер телефона"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B"/>
                 <EditText
                     android:id="@+id/studentAddress"
                     android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                     android:hint="Введите адрес проживания"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <Spinner
                     android:layout_margin="10dp"
                     android:id="@+id/ClassSpinner"

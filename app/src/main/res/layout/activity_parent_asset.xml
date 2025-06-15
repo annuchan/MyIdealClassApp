@@ -7,6 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".Parent.Parent_asset"
     android:background="#EDEDE9">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,6 +48,7 @@
                     android:layout_above="@+id/bottom_bar"/>
             </LinearLayout>
     </LinearLayout>
+    </ScrollView>
     <!-- Нижний бар -->
     <LinearLayout
         android:id="@+id/bottom_bar"

@@ -72,7 +72,7 @@
                     android:hint="Введите фамилию учителя"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                     android:hint="Введите имя учителя"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                     android:hint="Введите отчество учителя"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:id="@+id/Specialty_Teacher"
                     android:layout_width="match_parent"
@@ -99,7 +99,18 @@
                     android:hint="Введите специальность"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/parentDateOfBirth"
+                    android:hint="Введите дату рождения"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
+                    android:textColorHint="#140F0B"
+                    android:focusable="false"
+                    android:clickable="true"/>
                 <EditText
                     android:id="@+id/education"
                     android:layout_width="match_parent"
@@ -108,7 +119,7 @@
                     android:hint="Введите образование"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:id="@+id/stash"
                     android:layout_width="match_parent"
@@ -117,7 +128,7 @@
                     android:hint="Введите стаж"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:id="@+id/gramot"
                     android:layout_width="match_parent"
@@ -126,7 +137,7 @@
                     android:hint="Введите достижения"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
@@ -135,7 +146,7 @@
                     android:hint="Введите номер телефона"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B"/>
                 <EditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
@@ -144,7 +155,7 @@
                     android:hint="Введите адрес эл. почты"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B" />
                 <EditText
                     android:id="@+id/adress"
                     android:layout_width="match_parent"
@@ -153,23 +164,11 @@
                     android:hint="Введите адрес проживания"
                     android:padding="10dp"
                     android:layout_margin="10dp"
-                    />
+                    android:textColorHint="#140F0B"  />
 
                 <View
                     style="@style/MyLineHorizontal"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <ImageView
-                        style="@style/MyImageView"
-                        app:srcCompat="@drawable/picture"
-                        android:layout_marginStart="10dp"
-                        android:padding="3dp"
-                        android:id="@+id/picture"/>
 
-
-                </LinearLayout>
                 <Spinner
                     android:layout_margin="10dp"
                     android:id="@+id/subject_teacher"

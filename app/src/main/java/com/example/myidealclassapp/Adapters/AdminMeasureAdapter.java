@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myidealclassapp.Classes.Measure;
 import com.example.myidealclassapp.R;
-import com.example.myidealclassapp.Admin.Admin_measure_edit;  // <-- поменяй на реальный класс, если он есть
+import com.example.myidealclassapp.Admin.Admin_measure_edit;  // <-- поменяй на реальный класс, если он существуют
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -52,28 +52,42 @@ public class AdminMeasureAdapter extends RecyclerView.Adapter<AdminMeasureAdapte
         holder.type.setText(measure.getType_Measure());
         holder.dateTime.setText(measure.getDate_Measure());
 
+
         String imageData = measure.getImageBase64();
-        if (imageData != null && !imageData.isEmpty()) {
-            if (imageData.startsWith("http")) {
-                Glide.with(context)
-                        .load(imageData)
-                        .placeholder(R.drawable.school2)
-                        .error(R.drawable.school2)
-                        .into(holder.imageEvent);
+
+        // Если поле ImageBase64 равно "0", вставляем картинку ph_1
+        if ("0".equals(imageData)) {
+            imageData = "school3";
+            measure.setImageBase64(imageData);
+        }
+
+        if (imageData.startsWith("http")) {
+            Glide.with(context)
+                    .load(imageData)
+                    .placeholder(R.drawable.school2)
+                    .error(R.drawable.school2)
+                    .into(holder.imageEvent);
+        } else if (imageData.startsWith("school3")) {
+            int resId = context.getResources().getIdentifier(imageData, "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.imageEvent.setImageResource(resId);
             } else {
-                try {
-                    byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    holder.imageEvent.setImageBitmap(decodedBitmap);
-                } catch (Exception e) {
-                    holder.imageEvent.setImageResource(R.drawable.school2);
-                }
+                holder.imageEvent.setImageResource(R.drawable.school2);
+            }
+        } else if (imageData.length() > 0) {
+            try {
+                byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                holder.imageEvent.setImageBitmap(decodedBitmap);
+            } catch (Exception e) {
+                holder.imageEvent.setImageResource(R.drawable.school2);
             }
         } else {
             holder.imageEvent.setImageResource(R.drawable.school2);
         }
 
         holder.detailsImage.setOnClickListener(v -> showPopupMenu(v, measure, position));
+
     }
 
     @Override
@@ -110,7 +124,7 @@ public class AdminMeasureAdapter extends RecyclerView.Adapter<AdminMeasureAdapte
 
         edit.setOnClickListener(v -> {
             popupWindow.dismiss();
-            Intent intent = new Intent(context, Admin_measure_edit.class);  // <-- поменяй на твой активити для админа
+            Intent intent = new Intent(context, Admin_measure_edit.class);
             intent.putExtra("Id", measure.getId());
             intent.putExtra("Title", measure.getTitle());
             intent.putExtra("Describe", measure.getDescribe());
@@ -134,19 +148,16 @@ public class AdminMeasureAdapter extends RecyclerView.Adapter<AdminMeasureAdapte
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
 
-        // Начинаем с прозрачности 0 на всем dialogView
         dialogView.setAlpha(0f);
 
         dialog.show();
 
-        // Анимация появления (fade in)
         dialogView.animate().alpha(1f).setDuration(300).start();
 
         ImageView yesButton = dialogView.findViewById(R.id.yesbutton);
         ImageView noButton = dialogView.findViewById(R.id.nobutton);
 
         yesButton.setOnClickListener(v -> {
-            // Анимация исчезновения (fade out)
             dialogView.animate().alpha(0f).setDuration(300).withEndAction(() -> {
                 db.collection("Measure")
                         .whereEqualTo("id", measure.getId())
@@ -166,7 +177,6 @@ public class AdminMeasureAdapter extends RecyclerView.Adapter<AdminMeasureAdapte
         });
 
         noButton.setOnClickListener(v -> {
-            // Анимация исчезновения (fade out) при отмене
             dialogView.animate().alpha(0f).setDuration(300).withEndAction(dialog::dismiss).start();
         });
     }

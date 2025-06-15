@@ -1,5 +1,6 @@
 package com.example.myidealclassapp.Admin;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -44,6 +45,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,19 +56,13 @@ public class Admin_teacher_edit extends AppCompatActivity {
             specialtyEditText, educationEditText, stashEditText, gramotEditText,
             phoneEditText, emailEditText, addressEditText;
     private Button saveButton;
-    private ImageView pictureImageView;
-    private Bitmap selectedImageBitmap;
-    private String encodedImage;
-    private String uploadedImageUrl;
-    private static final String IMGBB_API_KEY = "972a14249ae8a675f7d1384d2a11bc0e";
-    private static final String UPLOAD_URL = "https://api.imgbb.com/1/upload";
-    private static final int PICK_IMAGE_REQUEST = 1;
     private Spinner subjectSpinner;
     private List<Subject> subjectList = new ArrayList<>();
     private int selectedSubjectId = -1; // сюда запишем Id выбранного предмета
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private EditText parentDateOfBirth;
+    private Calendar calendar = Calendar.getInstance();
     private long teacherId;
 
     @Override
@@ -83,11 +79,13 @@ public class Admin_teacher_edit extends AppCompatActivity {
         phoneEditText = findViewById(R.id.phone);
         emailEditText = findViewById(R.id.email);
         addressEditText = findViewById(R.id.adress);
-        pictureImageView = findViewById(R.id.picture);
-        pictureImageView = findViewById(R.id.picture);
-        pictureImageView.setOnClickListener(view -> chooseImage());
         saveButton = findViewById(R.id.savebutton);
         subjectSpinner = findViewById(R.id.subject_teacher);
+        parentDateOfBirth = findViewById(R.id.parentDateOfBirth);
+
+        parentDateOfBirth.setOnClickListener(v -> showDatePickerDialog()); // вызываем диалог с календарём
+
+
         loadSubjects();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -132,6 +130,17 @@ public class Admin_teacher_edit extends AppCompatActivity {
             Log.d("DEBUG", "Employee ID не передан");
         }
     }
+    private void showDatePickerDialog(){
+        DatePickerDialog picker = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            // Записываем результат в поле с датой
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            parentDateOfBirth.setText(dayOfMonth + "." + (month + 1) + "." + year);
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        picker.show();
+    }
     private void loadSubjects() {
         db.collection("Subjects")
                 .get()
@@ -167,64 +176,6 @@ public class Admin_teacher_edit extends AppCompatActivity {
                     });
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Ошибка загрузки предметов", Toast.LENGTH_SHORT).show());
-    }
-    private void chooseImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            try {
-                Uri imageUri = data.getData();
-                selectedImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                pictureImageView.setImageBitmap(selectedImageBitmap);
-                encodedImage = encodeImageToBase64Strong(selectedImageBitmap);
-            } catch (IOException e) {
-                Toast.makeText(this, "Ошибка обработки изображения", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    private String encodeImageToBase64Strong(Bitmap bitmap) {
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 800, 800, true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int quality = 90;
-
-        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        while (baos.toByteArray().length > 500_000 && quality > 10) {
-            baos.reset();
-            quality -= 10;
-            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        }
-
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-    }
-    private void uploadImageToImgBB() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
-                response -> {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        uploadedImageUrl = jsonObject.getJSONObject("data").getString("url");
-                        updateTeacher(); // после успешной загрузки
-                    } catch (JSONException e) {
-                        Toast.makeText(this, "Ошибка обработки ответа ImgBB", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                error -> Toast.makeText(this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show()) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("key", IMGBB_API_KEY);
-                params.put("image", encodedImage);
-                return params;
-            }
-        };
-
-        queue.add(stringRequest);
     }
 
     public void back(View view) {
@@ -290,7 +241,7 @@ public class Admin_teacher_edit extends AppCompatActivity {
                     }
 
                     DocumentSnapshot doc = querySnapshot.getDocuments().get(0);
-
+                    parentDateOfBirth.setText(doc.getString("Date_Of_Birth"));
                     lastNameEditText.setText(doc.getString("LastName"));
                     firstNameEditText.setText(doc.getString("FirstName"));
                     middleNameEditText.setText(doc.getString("MiddleName"));
@@ -324,7 +275,7 @@ public class Admin_teacher_edit extends AppCompatActivity {
         String phone = phoneEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String address = addressEditText.getText().toString().trim();
-
+        String birthDate = parentDateOfBirth.getText().toString().trim();
         // Проверка на пустые поля
         if (lastName.isEmpty() || firstName.isEmpty() || middleName.isEmpty()
                 || specialty.isEmpty() || education.isEmpty() || stashStr.isEmpty()
@@ -332,7 +283,10 @@ public class Admin_teacher_edit extends AppCompatActivity {
             Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (birthDate.isEmpty()) {
+            Toast.makeText(this, "Укажите дату рождения", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // Проверка ФИО — только буквы, максимум 50 символов
         String nameRegex = "^[А-Яа-яЁёA-Za-z]+$";
         if (lastName.length() > 50 || !lastName.matches(nameRegex)) {
@@ -413,7 +367,7 @@ public class Admin_teacher_edit extends AppCompatActivity {
                     updated.put("Email", email);
                     updated.put("Address", address);
                     updated.put("Id_Subject", selectedSubjectId);
-                    updated.put("ImageBase64", uploadedImageUrl);
+                    updated.put("Date_Of_Birth", birthDate);
                     db.collection("Employees")
                             .document(doc.getId())
                             .update(updated)

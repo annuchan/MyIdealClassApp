@@ -25,6 +25,7 @@ import com.example.myidealclassapp.Teacher.Teacher_important_imformation_edit;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Random;
 
 public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTeacherImportInfoAdapter.ViewHolder> {
 
@@ -48,41 +49,41 @@ public class AdminTeacherImportInfoAdapter extends RecyclerView.Adapter<AdminTea
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdminTeacherImportInfoAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Important_information info = infoList.get(position);
-
 
         holder.title.setText(info.getTitle());
         holder.description.setText(info.getDescribe());
         holder.date.setText(info.getDate_imp_info());
 
-        String imageData = info.getImageBase64();
-        if (imageData != null && !imageData.isEmpty()) {
-            if (imageData.startsWith("http")) {
 
-                Glide.with(context)
-                        .load(imageData)
-                        .placeholder(R.drawable.school2)
-                        .error(R.drawable.school2)
-                        .into(holder.image);
-            } else {
-                try {
-                    Log.d(TAG, "Decoding Base64 image for position " + position);
-                    byte[] decodedBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    holder.image.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error decoding image for position " + position + ": " + e.getMessage());
-                    holder.image.setImageResource(R.drawable.school2);
-                }
-            }
+        String imageBase64 = info.getImageBase64();
+
+        if (imageBase64 == null ||
+                imageBase64.trim().isEmpty() ||
+                imageBase64.trim().equals("0")) {
+
+            // Используем картинку по умолчанию ph_1
+            holder.image.setImageResource(R.drawable.school3);
         } else {
-            Log.d(TAG, "No image data for position " + position + ", using default image");
-            holder.image.setImageResource(R.drawable.school2);
+            try {
+                byte[] decodedBytes = Base64.decode(imageBase64, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                if (bitmap == null) {
+                    holder.image.setImageResource(R.drawable.school3);
+                } else {
+                    holder.image.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error decoding image for position " + position + ": " + e.getMessage());
+                holder.image.setImageResource(R.drawable.school3);
+            }
         }
 
         holder.menuButton.setOnClickListener(v -> showPopupMenu(v, info, position));
+
     }
+
 
     @Override
     public int getItemCount() {

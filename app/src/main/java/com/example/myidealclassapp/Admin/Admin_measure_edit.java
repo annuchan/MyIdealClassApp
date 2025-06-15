@@ -89,7 +89,6 @@ public class Admin_measure_edit extends AppCompatActivity {
         addDescrip = findViewById(R.id.addDescrip);
         addType = findViewById(R.id.addtype);
         saveButton = findViewById(R.id.moreButton);
-        imageView = findViewById(R.id.picture);
         db = FirebaseFirestore.getInstance();
 
 

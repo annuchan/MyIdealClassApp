@@ -36,7 +36,8 @@
             android:hint="Введите логин"
             android:padding="10dp"
             android:layout_margin="10dp"
-            android:id="@+id/loginEditText"/>
+            android:id="@+id/loginEditText"
+            android:textColorHint="#140F0B"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +46,8 @@
             android:padding="10dp"
             android:layout_margin="10dp"
             android:id="@+id/passwordEditText"
-            android:password="true"/>
+            android:password="true"
+            android:textColorHint="#140F0B"/>
         <Button
             android:id="@+id/loginButtonEnter"
             android:text="Войти"

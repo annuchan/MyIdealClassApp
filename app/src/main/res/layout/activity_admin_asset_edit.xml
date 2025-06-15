@@ -72,6 +72,7 @@
                     android:hint="Введите название секции"
                     android:padding="10dp"
                     android:layout_margin="10dp"
+                    android:textColorHint="#140F0B"
                     />
                 <EditText
                     android:layout_width="match_parent"
@@ -81,6 +82,7 @@
                     android:hint="Введите описание секции"
                     android:padding="10dp"
                     android:layout_margin="10dp"
+                    android:textColorHint="#140F0B"
                     />
                 <EditText
                     android:layout_width="match_parent"
@@ -90,6 +92,7 @@
                     android:hint="Введите место проведения"
                     android:padding="10dp"
                     android:layout_margin="10dp"
+                    android:textColorHint="#140F0B"
                     />
                 <TextView
                     style="@style/MyTextView"
@@ -106,15 +109,6 @@
                     android:background="#E3D5CA"
                     android:padding="0dp"
                     />
-                <View
-                    style="@style/MyLineHorizontal"/>
-                <ImageView
-                    style="@style/MyImageView"
-                    android:id="@+id/picture"
-                    app:srcCompat="@drawable/picture"
-                    android:layout_marginStart="10dp"
-                    android:padding="3dp" />
-
                 <View
                     style="@style/MyLineHorizontal"/>
 

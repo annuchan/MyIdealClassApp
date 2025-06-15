@@ -58,14 +58,12 @@ public class Teacher_measure_edit extends AppCompatActivity {
     private String idEmployee;
     private String selectedDate;
 
-    private ImageView imageView;
-    private String imageBase64OrUrl = "";
-    private boolean imageChanged = false;
 
-    private ActivityResultLauncher<Intent> imagePickerLauncher;
+
+
     private String employeeId;
     private  int idSubject;
-    private final String IMGBB_API_KEY = "972a14249ae8a675f7d1384d2a11bc0e";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +73,7 @@ public class Teacher_measure_edit extends AppCompatActivity {
         addTitle = findViewById(R.id.addTitle);
         addDescrip = findViewById(R.id.addDescrip);
         moreButton = findViewById(R.id.moreButton);
-        imageView = findViewById(R.id.picture);
+
         db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
@@ -84,39 +82,22 @@ public class Teacher_measure_edit extends AppCompatActivity {
         originalDescribe = intent.getStringExtra("Describe");
         originalDate = intent.getStringExtra("Date_measure");
         idEmployee = intent.getStringExtra("Id_Employee");
-
         selectedDate = originalDate;
-
         addTitle.setText(originalTitle);
         addDescrip.setText(originalDescribe);
-
-        imageBase64OrUrl = intent.getStringExtra("ImageBase64");
-        loadImage(imageBase64OrUrl);
 
             if (intent.hasExtra("employeeId")) {
                 employeeId = intent.getStringExtra("employeeId");
             }
 
 
-        findViewById(R.id.picture).setOnClickListener(v -> openImagePicker());
+
 
         findViewById(R.id.calendar).setOnClickListener(v -> openDatePicker());
 
         moreButton.setOnClickListener(v -> saveChanges());
 
-        imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                            uploadImageToImgBB(bitmap);
-                        } catch (IOException e) {
-                            Toast.makeText(this, "Ошибка выбора изображения", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> insets);
         ImageView dropdownMenu = findViewById(R.id.dropdown_menu);
@@ -179,33 +160,9 @@ public class Teacher_measure_edit extends AppCompatActivity {
         }
     }
 
-    private void loadImage(String base64OrUrl) {
-        if (base64OrUrl == null || base64OrUrl.isEmpty()) {
-            imageView.setImageResource(R.drawable.school2);
-            return;
-        }
 
-        if (base64OrUrl.startsWith("http")) {
-            Glide.with(this)
-                    .load(base64OrUrl)
-                    .placeholder(R.drawable.school2)
-                    .into(imageView);
-        } else {
-            try {
-                byte[] decodedBytes = Base64.decode(base64OrUrl, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                imageView.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                imageView.setImageResource(R.drawable.school2);
-            }
-        }
-    }
 
-    private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        imagePickerLauncher.launch(intent);
-    }
+
 
     private void openDatePicker() {
         final Calendar calendar = Calendar.getInstance();
@@ -249,11 +206,6 @@ public class Teacher_measure_edit extends AppCompatActivity {
                         updatedData.put("Id_Employee", idEmployee);
                         updatedData.put("Id_Type", 0);
 
-                        if (imageChanged && !imageBase64OrUrl.isEmpty()) {
-                            updatedData.put("ImageBase64", imageBase64OrUrl);
-                        } else if (!imageChanged && imageBase64OrUrl != null) {
-                            updatedData.put("ImageBase64", imageBase64OrUrl);
-                        }
 
                         db.collection("Measure")
                                 .document(document.getId())
@@ -271,87 +223,4 @@ public class Teacher_measure_edit extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this, "Ошибка поиска документа: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void uploadImageToImgBB(Bitmap bitmap) {
-        Toast.makeText(this, "Загрузка изображения...", Toast.LENGTH_SHORT).show();
-
-        String base64Image = encodeImageToBase64(bitmap);
-
-        OkHttpClient client = new OkHttpClient();
-
-        FormBody formBody = new FormBody.Builder()
-                .add("key", IMGBB_API_KEY)
-                .add("image", base64Image)
-                .build();
-
-        Request request = new Request.Builder()
-                .url("https://api.imgbb.com/1/upload")
-                .post(formBody)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> Toast.makeText(Teacher_measure_edit.this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    runOnUiThread(() -> Toast.makeText(Teacher_measure_edit.this, "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show());
-                    return;
-                }
-
-                String res = response.body().string();
-                String url = parseImgBBUrl(res);
-
-                if (url != null) {
-                    runOnUiThread(() -> {
-                        imageBase64OrUrl = url;
-                        imageChanged = true;
-                        Glide.with(Teacher_measure_edit.this)
-                                .load(url)
-                                .placeholder(R.drawable.school2)
-                                .into(imageView);
-                        Toast.makeText(Teacher_measure_edit.this, "Изображение загружено", Toast.LENGTH_SHORT).show();
-                    });
-                } else {
-                    runOnUiThread(() -> Toast.makeText(Teacher_measure_edit.this, "Ошибка обработки ответа ImgBB", Toast.LENGTH_SHORT).show());
-                }
-            }
-        });
-    }
-
-    private String encodeImageToBase64(Bitmap bitmap) {
-        int maxSizeBytes = 1_000_000;
-        int quality = 60;
-        Bitmap scaledBitmap = bitmap;
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-
-        while (baos.toByteArray().length > maxSizeBytes && quality > 10) {
-            baos.reset();
-            quality -= 10;
-            int newWidth = (int) (scaledBitmap.getWidth() * 0.9);
-            int newHeight = (int) (scaledBitmap.getHeight() * 0.9);
-            scaledBitmap = Bitmap.createScaledBitmap(scaledBitmap, newWidth, newHeight, true);
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        }
-
-        byte[] byteArray = baos.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    private String parseImgBBUrl(String json) {
-        try {
-            int urlStart = json.indexOf("\"url\":\"") + 7;
-            int urlEnd = json.indexOf("\"", urlStart);
-            if (urlStart > 6 && urlEnd > urlStart) {
-                return json.substring(urlStart, urlEnd).replace("\\/", "/");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

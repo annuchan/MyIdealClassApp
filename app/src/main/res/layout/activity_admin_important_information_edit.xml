@@ -64,6 +64,7 @@
             android:hint="Введите заголовок"
             android:padding="10dp"
             android:layout_margin="10dp"
+            android:textColorHint="#140F0B"
             />
         <EditText
             android:layout_width="match_parent"
@@ -73,6 +74,7 @@
             android:hint="Введите описание"
             android:padding="10dp"
             android:layout_margin="10dp"
+            android:textColorHint="#140F0B"
             />
         <View
             style="@style/MyLineHorizontal"/>
@@ -93,12 +95,6 @@
             android:gravity="left"
             android:orientation="horizontal"
             android:weightSum="5">
-            <ImageView
-                android:id="@+id/picture"
-                style="@style/MyImageView"
-                app:srcCompat="@drawable/picture"
-                android:layout_marginStart="10dp"
-                android:padding="3dp" />
             <ImageView
                 android:id="@+id/calendar"
                 style="@style/MyImageView"
